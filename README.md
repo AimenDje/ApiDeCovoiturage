@@ -1,5 +1,17 @@
 # Service de covoiturage Aimen Gabriel
 
+# 1) Description de la problématique 
+
+
+
+
+
+
+
+# 2) Description du projet
+
+Le projet de service de covoiturage consiste une application informatique qui vise à faciliter le partage de trajets en voiture entre conducteurs et passagers. L'objectif est de promouvoir une mobilité plus durable, de réduire les coûts de transport, d'améliorer l'utilisation des véhicules et de contribuer à la réduction de la congestion routière et des émissions de gaz à effet de serre. Il s'agit d'une application où un conducteur et un passager peuvent s'inscrire. Le passager inscrit son itinéraire ( contenant l'addresse ou la région du départ et de la destination) dans l’application et le chauffeur choisi quel trajet il souhaite effectuer parmi une liste. Le chauffeur pourrait avoir plusieurs passagers.
+
 
 
 ## Getting started
