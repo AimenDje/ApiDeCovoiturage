@@ -5,7 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.*
 
-@Controller
+@RestController
 class ReservationController {
     @GetMapping("/reservations")
     fun getReservations(){}
@@ -16,12 +16,12 @@ class ReservationController {
     @GetMapping("/trajet/{id}/reservations")
     fun getReservationsParTrajet(@PathVariable id: Int){}
 
-    @PostMapping("/trajet")
+    @PostMapping("/reservation")
     fun addReservation(@RequestBody reservation: Reservation){}
 
-    @PutMapping("/trajet")
+    @PutMapping("/reservation")
     fun modifyReservation(@RequestBody reservation: Reservation){}
 
-    @DeleteMapping("/trajet/{id}")
-    fun deleteReservation(@RequestBody reservation: Reservation){}
+    @DeleteMapping("/reservation/{id}")
+    fun deleteReservation(@PathVariable id: Int){}
 }
