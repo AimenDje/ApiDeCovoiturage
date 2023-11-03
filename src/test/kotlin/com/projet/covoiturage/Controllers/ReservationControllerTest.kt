@@ -18,7 +18,12 @@ class ReservationControllerTest {
 
     @Test
     // @GetMapping("/reservations")
-    fun `Étant donné`() {}
+    // Étant donné le restaurant dont le code est RF125 lorsqu'on effectue une requête
+    // GET de recherche par code alors on obtient un JSON qui contient un restaurant dont
+    // le code est RF125 et un code de retour 200`() {
+    fun `Étant donné `() {
+        TODO()
+    }
 
     @Test
     // @GetMapping("/reservation/{id}")

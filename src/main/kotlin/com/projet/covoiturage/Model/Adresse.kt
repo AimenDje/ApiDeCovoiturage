@@ -7,5 +7,4 @@ class Adresse (
         val rue: String,
         val ville: String,
         val province: String,
-        val codePostal: String) {
-}
+        val codePostal: String) {}

@@ -7,5 +7,5 @@ class Utilisateur (
         val courriel: String,
         val telephone: String,
         val adresse: Adresse,
-        val estPassager: Boolean) {
-}
+        val estPassager: Boolean,
+        val listeTrajets: List<Trajet>) {}

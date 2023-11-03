@@ -7,5 +7,4 @@ data class Reservation (
         val trajet: Trajet,
         val utilisateur: Utilisateur,
         val nombrePassager: Int,
-        val heureDepart: Date) {
-}
+        val heureDepart: Date) {}
