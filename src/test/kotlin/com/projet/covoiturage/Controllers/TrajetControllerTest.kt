@@ -31,7 +31,7 @@ class TrajetControllerTest {
     fun `Étant donné3`() {}
 
     @Test
-    // @PutMapping("/trajet")
+    // @PutMapping("/trajet/{id}")
     fun `Étant donné4`() {}
 
     @Test

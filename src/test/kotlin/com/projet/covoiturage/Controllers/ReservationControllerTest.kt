@@ -33,7 +33,7 @@ class ReservationControllerTest {
     fun `Étant donné4`() {}
 
     @Test
-    // @PutMapping("/reservation")
+    // @PutMapping("/reservation/{id}")
     fun `Étant donné5`() {}
 
     @Test

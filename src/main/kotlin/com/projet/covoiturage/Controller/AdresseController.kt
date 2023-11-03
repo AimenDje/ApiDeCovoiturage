@@ -15,8 +15,8 @@ class AdresseController {
     @PostMapping("/adresse")
     fun addAdresse(@RequestBody adresse: Adresse){}
 
-    @PutMapping("/adresse")
-    fun modifyAdresse(@RequestBody adresse: Adresse){}
+    @PutMapping("/adresse/{id}")
+    fun modifyAdresse(@RequestBody id: Int, adresse: Adresse ){}
 
     @DeleteMapping("/adresse/{id}")
     fun deleteAdresse(@PathVariable id: Int){}

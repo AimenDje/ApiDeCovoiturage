@@ -15,8 +15,8 @@ class UtilisateurController {
     @PostMapping("/utilisateur")
     fun addUtilisateur(@RequestBody utilisateur: Utilisateur){}
 
-    @PutMapping("/utilisateur")
-    fun modifyUtilisateur(@RequestBody utilisateur: Utilisateur){}
+    @PutMapping("/utilisateur/{id}")
+    fun modifyUtilisateur(@RequestBody id: Int, utilisateur: Utilisateur){}
 
     @DeleteMapping("/utilisateur/{id}")
     fun deleteUtilisateur(@PathVariable id: Int){}

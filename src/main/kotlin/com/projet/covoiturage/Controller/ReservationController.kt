@@ -19,8 +19,8 @@ class ReservationController {
     @PostMapping("/reservation")
     fun addReservation(@RequestBody reservation: Reservation){}
 
-    @PutMapping("/reservation")
-    fun modifyReservation(@RequestBody reservation: Reservation){}
+    @PutMapping("/reservation/{id}")
+    fun modifyReservation(@RequestBody id: Int, reservation: Reservation){}
 
     @DeleteMapping("/reservation/{id}")
     fun deleteReservation(@PathVariable id: Int){}

@@ -16,8 +16,8 @@ class TrajetController {
     @PostMapping("/trajet")
     fun addTrajet(@RequestBody trajet: Trajet){}
 
-    @PutMapping("/trajet")
-    fun modifyTrajet(@RequestBody trajet: Trajet){}
+    @PutMapping("/trajet/{id}")
+    fun modifyTrajet(@RequestBody id: Int, trajet: Trajet){}
 
     @DeleteMapping("/trajet/{id}")
     fun deleteTrajet(@PathVariable id: Int){}

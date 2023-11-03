@@ -28,7 +28,7 @@ class UtilisateurControllerTest {
     fun `Étant donné3`() {}
 
     @Test
-    // @PutMapping("/utilisateur")
+    // @PutMapping("/utilisateur/{id}")
     fun `Étant donné4`() {}
 
     @Test

@@ -25,7 +25,7 @@ class AdresseControllerTest {
     fun `Étant donné3`() {}
 
     @Test
-    // @PutMapping("/adresse")
+    // @PutMapping("/adresse/{id}")
     fun `Étant donné4`() {}
 
     @Test
