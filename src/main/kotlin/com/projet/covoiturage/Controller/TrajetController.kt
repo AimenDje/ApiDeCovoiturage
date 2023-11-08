@@ -1,24 +1,24 @@
 package com.projet.covoiturage.Controller
 
-import com.projet.covoiturage.Model.Reservation
 import com.projet.covoiturage.Model.Trajet
+import com.projet.covoiturage.Service.TrajetService
 import io.swagger.v3.oas.annotations.Operation
 import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.*
 
 @RestController
-class TrajetController {
+class TrajetController( val service: TrajetService) {
     @Operation(summary = "Obtient tous les trajets")
     @GetMapping("/trajets")
-    fun getTrajets(){}
+    fun getReservations() = service.chercherTous()
 
     @Operation(summary = "Obtient un trajet avec son id")
     @GetMapping("/trajet/{id}")
-    fun getTrajetParCode(@PathVariable id: Int){}
+    fun getReservationParCode(@PathVariable id: Int) = service.chercherParId(id)
 
     @Operation(summary = "Ajouter un trajet")
     @PostMapping("/trajet")
-    fun addTrajet(@RequestBody trajet: Trajet){}
+    fun addReservation(@RequestBody trajet: Trajet) = service.ajouter(trajet)
 
     @Operation(summary = "Modifier un trajet avec son id")
     @PutMapping("/trajet/{id}")
@@ -26,5 +26,5 @@ class TrajetController {
 
     @Operation(summary = "Supprimer un trajet avec son id")
     @DeleteMapping("/trajet/{id}")
-    fun deleteTrajet(@PathVariable id: Int){}
+    fun deleteReservation(@PathVariable id: Int) = service.supprimer(id)
 }
