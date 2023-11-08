@@ -15,10 +15,6 @@ data class Reservation (
         @JoinColumn(name="trajet_id", nullable = true)
         val trajet: Trajet,
 
-        @OneToOne(fetch = FetchType.EAGER)
-        @JoinColumn(name="utilisateur_id", nullable = true)
-        val utilisateur: Utilisateur,
-
         @Column(nullable = true)
         val nombrePassager: Int,
 

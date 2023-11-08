@@ -16,6 +16,4 @@ class Utilisateur (
         @JoinColumn(name="adresse_id", nullable = false)
         val adresse: Adresse,
         val estPassager: Boolean,
-
-        @OneToMany(fetch = FetchType.EAGER, cascade = [CascadeType.ALL])
-        val listeTrajets: List<Trajet>) {}
+) {}

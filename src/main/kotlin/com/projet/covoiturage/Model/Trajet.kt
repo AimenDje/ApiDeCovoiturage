@@ -15,4 +15,9 @@ class Trajet (
 
         @OneToOne
         @JoinColumn(name="adresseArrivee_id", nullable = false)
-        val adresseArrivee: Adresse) {}
+        val adresseArrivee: Adresse,
+
+        @ManyToOne(fetch = FetchType.EAGER, optional = false)
+        @JoinColumn(name = "utilisateur_id")
+        val utilisateur: Utilisateur
+) {}
