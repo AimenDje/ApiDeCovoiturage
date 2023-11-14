@@ -8,6 +8,9 @@ import org.springframework.stereotype.Service
 
 @Service
 class ReservationService(val dao: ReservationDAO) {
+    fun chercherReservationsParUtilisateur(id: Int) = dao.chercherReservationsParUtilisateur(id);
+    fun chercherReservationParUtilisateur(idReservation: Int, idUtilisateur: Int) = dao.chercherReservationParUtilisateur(idReservation, idUtilisateur);
+
     fun chercherTous() = dao.chercherTous()
 
     fun chercherParId(id: Int) = dao.chercherParId(id)
@@ -17,5 +20,4 @@ class ReservationService(val dao: ReservationDAO) {
     //fun modifier(reservation: Reservation) = dao.modifier(reservation)
 
     fun supprimer(id: Int) = dao.supprimer(id)
-
 }

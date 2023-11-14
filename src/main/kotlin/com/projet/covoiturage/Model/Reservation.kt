@@ -12,12 +12,19 @@ data class Reservation (
         val reservationId: Int,
 
         @OneToOne(fetch = FetchType.EAGER)
-        @JoinColumn(name="trajet_id", nullable = true)
+        @JoinColumn(name="trajet_id", nullable = false)
         val trajet: Trajet,
 
-        @Column(nullable = true)
+        @Column(nullable = false)
         val nombrePassager: Int,
 
-        @Column(nullable = true)
-        val heureDepart: Date
+        @Column(nullable = false)
+        val heureDepart: Date,
+
+        @OneToOne(fetch = FetchType.EAGER)
+        @JoinColumn(name = "chauffeur_id", nullable = true)
+        val chauffeur: Utilisateur,
+
+        @Column(columnDefinition = "boolean default false")
+        val acceptee: Boolean
 ) {}

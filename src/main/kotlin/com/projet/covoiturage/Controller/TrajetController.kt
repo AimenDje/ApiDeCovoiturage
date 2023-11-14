@@ -13,8 +13,8 @@ class TrajetController( val service: TrajetService) {
     fun getReservations() {}
 
     @Operation(summary = "Obtient un trajet d'un utilisateur")
-    @GetMapping("/utilisateur/{id}/trajet/{id}")
-    fun getReservationParCode(@PathVariable id: Int) {}
+    @GetMapping("/utilisateur/{idUtilisateur}/trajet/{idTrajet}")
+    fun getReservationParCode(@PathVariable idTrajet: Int, @PathVariable idUtilisateur: Int) {}
 
     @Operation(summary = "Ajouter un trajet")
     @PostMapping("/trajet")

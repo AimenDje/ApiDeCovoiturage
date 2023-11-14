@@ -9,7 +9,13 @@ import org.springframework.stereotype.Repository
 @Repository
 interface ReservationRepo : JpaRepository<Reservation, Int> {
     //@Query("SELECT * FROM Reservation WHERE :#{#customer.firstname} ")
-    @Query("select * from reservation where trajet_id = any (select trajet_id from trajet where utilisateur_id = :#{#utilisateur_id})")
-    fun findAllReservationByUser(@Param("utilisateur_id") id : Int ): List<Reservation?>?
+    @Query("select r from Reservation r where r.trajet.trajetId = any " +
+            "(select t.trajetId from Trajet t where t.utilisateur.utilisateurId = :utilisateur_id)")
+    fun findAllReservationByUser(@Param("utilisateur_id") id: Int): List<Reservation?>?
 
+    @Query("select r from Reservation r where r.reservationId = :reservation_id and r.trajet.trajetId = any " +
+            "(select t.trajetId from Trajet t where t.utilisateur.utilisateurId = :utilisateur_id)")
+    fun findReservationByUserAndReservation(
+            @Param("reservation_id") idReservation: Int,
+            @Param("utilisateur_id") idUtilisateur: Int): Reservation?
 }
