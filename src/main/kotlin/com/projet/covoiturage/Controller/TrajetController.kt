@@ -8,21 +8,21 @@ import org.springframework.web.bind.annotation.*
 
 @RestController
 class TrajetController( val service: TrajetService) {
-    @Operation(summary = "Obtient tous les trajets")
-    @GetMapping("/trajets")
-    fun getReservations() = service.chercherTous()
+    @Operation(summary = "Obtient tous les trajets d'un utilisateur")
+    @GetMapping("/utilisateur/{id}/trajets")
+    fun getReservations() {}
 
-    @Operation(summary = "Obtient un trajet avec son id")
-    @GetMapping("/trajet/{id}")
-    fun getReservationParCode(@PathVariable id: Int) = service.chercherParId(id)
+    @Operation(summary = "Obtient un trajet d'un utilisateur")
+    @GetMapping("/utilisateur/{id}/trajet/{id}")
+    fun getReservationParCode(@PathVariable id: Int) {}
 
     @Operation(summary = "Ajouter un trajet")
     @PostMapping("/trajet")
     fun addReservation(@RequestBody trajet: Trajet) = service.ajouter(trajet)
 
-    @Operation(summary = "Modifier un trajet avec son id")
+/*    @Operation(summary = "Modifier un trajet avec son id")
     @PutMapping("/trajet/{id}")
-    fun modifyTrajet(@RequestBody id: Int, trajet: Trajet){}
+    fun modifyTrajet(@RequestBody id: Int, trajet: Trajet){}*/
 
     @Operation(summary = "Supprimer un trajet avec son id")
     @DeleteMapping("/trajet/{id}")

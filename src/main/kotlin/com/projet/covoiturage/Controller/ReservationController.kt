@@ -11,13 +11,13 @@ import org.springframework.web.bind.annotation.*
 
 @RestController
 class ReservationController(val service: ReservationService) {
-    @Operation(summary = "Obtient toutes les réservations")
-    @GetMapping("/reservations")
-    fun getReservations() = service.chercherTous()
+    @Operation(summary = "Obtient toutes les réservations d'un utilisateur")
+    @GetMapping("/utilisateur/{id}/reservations")
+    fun getReservations() {}
 
-    @Operation(summary = "Obtient une réservation avec son id")
-    @GetMapping("/reservation/{id}")
-    fun getReservationParCode(@PathVariable id: Int) = service.chercherParId(id)
+    @Operation(summary = "Obtient une réservation d'un utilisateur")
+    @GetMapping("/utilisateur/{id}/reservation/{id}")
+    fun getReservationParCode(@PathVariable id: Int) {}
 
     @Operation(summary = "Ajouter une réservation")
     @PostMapping("/reservation")
