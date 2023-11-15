@@ -10,14 +10,12 @@ import org.springframework.stereotype.Service
 class ReservationService(val dao: ReservationDAO) {
     fun chercherReservationsParUtilisateur(id: Int) = dao.chercherReservationsParUtilisateur(id);
     fun chercherReservationParUtilisateur(idReservation: Int, idUtilisateur: Int) = dao.chercherReservationParUtilisateur(idReservation, idUtilisateur);
-
     fun chercherTous() = dao.chercherTous()
-
     fun chercherParId(id: Int) = dao.chercherParId(id)
-
     fun ajouter(reservation: Reservation) = dao.ajouter(reservation)
-
-    //fun modifier(reservation: Reservation) = dao.modifier(reservation)
-
     fun supprimer(id: Int) = dao.supprimer(id)
+    fun chercherReservationChaufeur(id: Int) = dao.chercherReservationChauffeur(id)
+    fun accepterReservation(idReservation: Int, idChauffeur: Int) = dao.accepterReservation(idReservation, idChauffeur)
+
+    fun chercherUtilisateur(id: Int) = dao.chercherUtilisateur(id)
 }

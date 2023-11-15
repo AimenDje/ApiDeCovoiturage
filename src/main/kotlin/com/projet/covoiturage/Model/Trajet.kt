@@ -4,20 +4,20 @@ import jakarta.persistence.*
 
 @Entity
 class Trajet (
-        @Id
         @GeneratedValue(strategy = GenerationType.IDENTITY)
-        val trajetId: Int,
-        val nom :String,
+        @Id
+        val trajetId: Int?,
+        val nom :String?,
 
-        @OneToOne
+        @ManyToOne
         @JoinColumn(name="adresseDepart_id", nullable = false)
-        val adresseDepart: Adresse,
+        val adresseDepart: Adresse?,
 
-        @OneToOne
+        @ManyToOne
         @JoinColumn(name="adresseArrivee_id", nullable = false)
-        val adresseArrivee: Adresse,
+        val adresseArrivee: Adresse?,
 
-        @ManyToOne(fetch = FetchType.EAGER, optional = false)
-        @JoinColumn(name = "utilisateur_id")
-        val utilisateur: Utilisateur
+        @ManyToOne()
+        @JoinColumn(name = "utilisateur_id", nullable = false)
+        val utilisateur: Utilisateur?
 ) {}

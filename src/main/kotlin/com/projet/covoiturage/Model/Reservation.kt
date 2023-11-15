@@ -7,11 +7,11 @@ import java.util.*
 
 @Entity
 data class Reservation (
-        @Id
         @GeneratedValue(strategy = GenerationType.IDENTITY)
-        val reservationId: Int,
+        @Id
+        val reservationId: Int?,
 
-        @OneToOne(fetch = FetchType.EAGER)
+        @ManyToOne
         @JoinColumn(name="trajet_id", nullable = false)
         val trajet: Trajet,
 
@@ -21,10 +21,10 @@ data class Reservation (
         @Column(nullable = false)
         val heureDepart: Date,
 
-        @OneToOne(fetch = FetchType.EAGER)
+        @ManyToOne
         @JoinColumn(name = "chauffeur_id", nullable = true)
-        val chauffeur: Utilisateur,
+        val chauffeur: Utilisateur?,
 
-        @Column(columnDefinition = "boolean default false")
+        @Column(columnDefinition = "boolean default false", nullable = false)
         val acceptee: Boolean
 ) {}

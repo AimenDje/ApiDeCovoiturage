@@ -2,9 +2,11 @@ package com.projet.covoiturage.Repository
 
 import com.projet.covoiturage.Model.Reservation
 import org.springframework.data.jpa.repository.JpaRepository
+import org.springframework.data.jpa.repository.Modifying
 import org.springframework.data.jpa.repository.Query
 import org.springframework.data.repository.query.Param
 import org.springframework.stereotype.Repository
+import org.springframework.transaction.annotation.Transactional
 
 @Repository
 interface ReservationRepo : JpaRepository<Reservation, Int> {
@@ -18,4 +20,15 @@ interface ReservationRepo : JpaRepository<Reservation, Int> {
     fun findReservationByUserAndReservation(
             @Param("reservation_id") idReservation: Int,
             @Param("utilisateur_id") idUtilisateur: Int): Reservation?
+
+    fun findReservationsByAccepteeIsFalse(): List<Reservation>
+
+    fun findReservationByChauffeurUtilisateurIdAndAccepteeIsTrue(idUtilisateur: Int): Reservation?
+
+    @Transactional
+    @Modifying
+    @Query("update Reservation r set r.chauffeur.utilisateurId = :utilisateur_id, r.acceptee = true where r.reservationId = :reservation_id")
+    fun updateReservationAccept(
+        @Param("reservation_id") idReservation: Int,
+        @Param("utilisateur_id") idChauffeur: Int)
 }

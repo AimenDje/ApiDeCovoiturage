@@ -6,4 +6,4 @@ import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.stereotype.Repository
 
 @Repository
-interface UtilisateurRepo : JpaRepository<Utilisateur, Int> {}
+interface UtilisateurRepo : JpaRepository<Utilisateur, Int>

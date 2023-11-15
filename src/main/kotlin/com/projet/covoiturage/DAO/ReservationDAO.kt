@@ -1,6 +1,7 @@
 package com.projet.covoiturage.DAO
 
 import com.projet.covoiturage.Model.Reservation
+import com.projet.covoiturage.Model.Utilisateur
 
 interface ReservationDAO : DAO<Reservation> {
     fun chercherReservationsParUtilisateur(id: Int): List<Reservation?>?
@@ -8,6 +9,8 @@ interface ReservationDAO : DAO<Reservation> {
     override fun chercherTous(): List<Reservation>
     override fun chercherParId(id: Int): Reservation?
     override fun ajouter(t: Reservation): Reservation?
-    //fun modifier(t: Reservation): Reservation?
     override fun supprimer(id: Int): Boolean
+    fun chercherReservationChauffeur(id: Int): Reservation?
+    fun accepterReservation(idReservation: Int, idChauffeur: Int): Reservation?
+    fun chercherUtilisateur(id: Int): Utilisateur?
 }

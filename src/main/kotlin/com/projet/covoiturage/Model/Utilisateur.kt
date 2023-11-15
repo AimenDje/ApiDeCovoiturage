@@ -4,15 +4,15 @@ import jakarta.persistence.*
 
 @Entity
 class Utilisateur (
-        @Id
         @GeneratedValue(strategy = GenerationType.IDENTITY)
-        val utilisateurId: Int,
+        @Id
+        val utilisateurId: Int?,
         val nom: String,
         val prenom: String,
         val courriel: String,
         val telephone: String,
 
-        @OneToOne
+        @ManyToOne
         @JoinColumn(name="adresse_id", nullable = false)
         val adresse: Adresse,
         val estPassager: Boolean,

@@ -7,9 +7,9 @@ import jakarta.persistence.Id
 
 @Entity
 class Adresse (
-        @Id
         @GeneratedValue(strategy = GenerationType.IDENTITY)
-        val adresseId: Int,
+        @Id
+        val adresseId: Int?,
         val numeroCivil: String,
         val appartement: String,
         val rue: String,
