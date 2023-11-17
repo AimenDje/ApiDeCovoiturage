@@ -13,18 +13,18 @@ data class Reservation (
 
         @ManyToOne
         @JoinColumn(name="trajet_id", nullable = false)
-        val trajet: Trajet,
+        val trajet: Trajet?,
 
         @Column(nullable = false)
-        val nombrePassager: Int,
+        val nombrePassager: Int?,
 
         @Column(nullable = false)
-        val heureDepart: Date,
+        val heureDepart: Date?,
 
         @ManyToOne
         @JoinColumn(name = "chauffeur_id", nullable = true)
         val chauffeur: Utilisateur?,
 
         @Column(columnDefinition = "boolean default false", nullable = false)
-        val acceptee: Boolean
+        val acceptee: Boolean?
 ) {}
