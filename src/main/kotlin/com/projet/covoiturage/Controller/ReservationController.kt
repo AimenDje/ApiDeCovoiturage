@@ -52,7 +52,7 @@ class ReservationController(val service: ReservationService) {
     @GetMapping("/utilisateur/{id}/reservations")
     fun getReservationsParUtilisateur(@PathVariable id: Int): List<Reservation?>? {
         if (service.chercherReservationsParUtilisateur(id)?.isEmpty() == true)
-            throw ReservationIntrouvableExc("La réservation avec l'id $id est introuvable.")
+            throw UtilisateurIntrouvableExc("L'utilisateur avec l'id $id est introuvable.")
         return service.chercherReservationsParUtilisateur(id)
     }
 
@@ -67,8 +67,14 @@ class ReservationController(val service: ReservationService) {
 
     @Operation(summary = "Ajouter une réservation")
     @PostMapping("/reservation")
-    fun addReservation(@RequestBody reservation: Reservation) = service.ajouter(reservation)
-
+    fun addReservation(@RequestBody reservation: Reservation): Reservation? {
+        val resultat = service.ajouter(reservation)
+        if (resultat == null)
+            throw MauvaiseFormulationObjetExc("La réservation que vous essayez d'ajouter est incorrectement " +
+                    "formulée ou est manquante")
+        else
+            return resultat
+    }
     @Operation(summary = "Modifier une réservation avec son id")
     @PutMapping("/reservation/{id}")
     fun modifyReservation(@PathVariable id: Int, @RequestBody reservation: Reservation): Reservation? {
@@ -82,7 +88,7 @@ class ReservationController(val service: ReservationService) {
     @DeleteMapping("/reservation/{id}")
     fun deleteReservation(@PathVariable id: Int): String {
         if (!service.supprimer(id))
-            throw ReservationIntrouvableExc("La réservation l'id $id n'a pas pu être supprimée parce qu'elle" +
+            throw ReservationIntrouvableExc("La réservation l'id $id n'a pas pu être supprimée parce qu'elle " +
                     "n'existe pas.")
         return "La réservation avec l'id $id a bien été supprimée."
     }

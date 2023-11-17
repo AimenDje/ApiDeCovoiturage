@@ -14,6 +14,6 @@ class Utilisateur (
 
         @ManyToOne
         @JoinColumn(name="adresse_id", nullable = false)
-        val adresse: Adresse,
+        val adresse: Adresse?,
         val estPassager: Boolean,
 ) {}
