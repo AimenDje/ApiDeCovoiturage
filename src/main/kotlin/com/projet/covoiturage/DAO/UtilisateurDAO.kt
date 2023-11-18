@@ -10,7 +10,5 @@ interface UtilisateurDAO : DAO<Utilisateur>  {
 
     override fun ajouter(t: Utilisateur): Utilisateur?
 
-    //override fun modifier(t: Reservation): Reservation?
-
     override fun supprimer(id: Int): Boolean
 }
