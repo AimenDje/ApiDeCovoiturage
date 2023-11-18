@@ -16,7 +16,7 @@ interface TrajetRepo : JpaRepository<Trajet, Int> {
 
     // chercher un trajet d'un utilisateur spécificque
     @Query("select t from Trajet  t where t.utilisateur.utilisateurId = :utilisateur_id and t.trajetId = :trajet_id")
-    fun findReservationByUserAndReservation(
+    fun findTrajetByUser(
         @Param("trajet_id") idTrajet: Int,
         @Param("utilisateur_id") idUtilisateur: Int): Trajet?
 }
