@@ -11,16 +11,21 @@ class TrajetController( val service: TrajetService) {
     @Operation(summary = "Obtient tous les trajets d'un utilisateur")
     @GetMapping("/utilisateur/{id}/trajets")
     fun getTrajetsParUtilisateur(@PathVariable idUtilisateur: Int): List<Trajet?>? {
-        if (service.chercherTrajetsParUtilisateur(idUtilisateur)?.isEmpty() == true)
+        if (service.chercherUtilisateur(idUtilisateur) == null)
             throw UtilisateurIntrouvableExc("L'utilisateur avec l'id $idUtilisateur est introuvable.")
+        else if (service.chercherTrajetsParUtilisateur(idUtilisateur)?.isEmpty() == true)
+            throw TrajetsIntrouvablesExc("L'utilisateur avec l'id $idUtilisateur n'a effectué aucun trajet pour le moment.")
         return service.chercherTrajetsParUtilisateur(idUtilisateur)
     }
 
     @Operation(summary = "Obtient un trajet d'un utilisateur")
     @GetMapping("/utilisateur/{idUtilisateur}/trajet/{idTrajet}")
     fun getTrajetParutilisateur(@PathVariable idTrajet: Int, @PathVariable idUtilisateur: Int) : Trajet?{
-        if (service.chercherTrajetParUtilisateur(idTrajet, idUtilisateur) == null)
+        if (service.chercherUtilisateur(idUtilisateur) == null)
+            throw UtilisateurIntrouvableExc("L'utilisateur avec l'id $idUtilisateur est introuvable.")
+        else if  (service.chercherTrajetParUtilisateur(idTrajet, idUtilisateur) == null)
             throw TrajetIntrouvableExc("Le trajet avec l'id $idTrajet est introuvable pour l'utilisateur $idUtilisateur")
+
         return service.chercherTrajetParUtilisateur(idTrajet,idUtilisateur)
     }
 
