@@ -17,4 +17,6 @@ class TrajetService (val dao: TrajetDAO){
     fun ajouter(trajet: Trajet) = dao.ajouter(trajet)
 
     fun supprimer(id: Int) = dao.supprimer(id)
+
+    fun chercherUtilisateur(id: Int) = dao.chercherUtilisateur(id)
 }

@@ -1,6 +1,7 @@
 package com.projet.covoiturage.DAO
 
 import com.projet.covoiturage.Model.Trajet
+import com.projet.covoiturage.Model.Utilisateur
 
 interface TrajetDAO : DAO<Trajet> {
     /*- chercher tous les trajets d'un utilisateur.
@@ -14,4 +15,6 @@ interface TrajetDAO : DAO<Trajet> {
     override fun ajouter(t: Trajet): Trajet?
 
     override fun supprimer(id: Int): Boolean
+
+    fun chercherUtilisateur(id: Int): Utilisateur?
 }
