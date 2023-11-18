@@ -41,7 +41,9 @@ class ReservationController(val service: ReservationService) {
     @Operation(summary = "Obtient la réservation acceptée par le chauffeur")
     @GetMapping("/chauffeur/{id}/reservation")
     fun getReservationChauffeur(@PathVariable id: Int): Reservation? {
-        if (service.chercherReservationChaufeur(id) == null)
+        if (service.chercherUtilisateur(id) == null)
+            throw UtilisateurIntrouvableExc("L'utilisateur avec l'id $id est introuvable.")
+        else if (service.chercherReservationChaufeur(id) == null)
             throw ReservationIntrouvableExc("Aucune réservation acceptée par ce chauffeur.")
         return service.chercherReservationChaufeur(id)
     }
@@ -51,15 +53,20 @@ class ReservationController(val service: ReservationService) {
     @Operation(summary = "Obtient toutes les réservations d'un utilisateur")
     @GetMapping("/utilisateur/{id}/reservations")
     fun getReservationsParUtilisateur(@PathVariable id: Int): List<Reservation?>? {
-        if (service.chercherReservationsParUtilisateur(id)?.isEmpty() == true)
+        if (service.chercherUtilisateur(id) == null)
             throw UtilisateurIntrouvableExc("L'utilisateur avec l'id $id est introuvable.")
+        else if (service.chercherReservationsParUtilisateur(id)?.isEmpty() == true)
+            throw ReservationsIntrouvablesExc("L'utilisateur avec l'id $id n'a effectué aucune réservation pour le moment.")
+
         return service.chercherReservationsParUtilisateur(id)
     }
 
     @Operation(summary = "Obtient une réservation d'un utilisateur")
     @GetMapping("/utilisateur/{idUtilisateur}/reservation/{idReservation}")
     fun getReservationParUtilisateur(@PathVariable idReservation: Int, @PathVariable idUtilisateur: Int): Reservation? {
-        if (service.chercherReservationParUtilisateur(idReservation, idUtilisateur) == null)
+        if (service.chercherUtilisateur(idUtilisateur) == null)
+            throw UtilisateurIntrouvableExc("L'utilisateur avec l'id $idUtilisateur est introuvable.")
+        else if (service.chercherReservationParUtilisateur(idReservation, idUtilisateur) == null)
             throw ReservationIntrouvableExc(
                 "La réservation avec l'id $idReservation est introuvable pour l'utilisateur $idUtilisateur")
         return service.chercherReservationParUtilisateur(idReservation, idUtilisateur)
