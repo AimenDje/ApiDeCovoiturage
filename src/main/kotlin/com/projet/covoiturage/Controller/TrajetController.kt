@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*
 @RestController
 class TrajetController( val service: TrajetService) {
     @Operation(summary = "Obtient tous les trajets d'un utilisateur")
-    @GetMapping("/utilisateur/{id}/trajets")
+    @GetMapping("/utilisateur/{idUtilisateur}/trajets")
     fun getTrajetsParUtilisateur(@PathVariable idUtilisateur: Int): List<Trajet?>? {
         if (service.chercherUtilisateur(idUtilisateur) == null)
             throw UtilisateurIntrouvableExc("L'utilisateur avec l'id $idUtilisateur est introuvable.")
@@ -51,8 +51,8 @@ class TrajetController( val service: TrajetService) {
     @PutMapping("/trajet/{id}")
     fun modifyTrajet(@PathVariable id: Int, @RequestBody trajet: Trajet): Trajet? {
         if (service.chercherParId(id) == null)
-            throw MauvaiseRequeteExc("Le Trajet avec l'id " + trajet.trajetId +
-                    " n'existe pas. Utilisez une requête POST pour en ajouter une nouvelle.")
+            throw MauvaiseRequeteExc("Le trajet avec l'id " + trajet.trajetId +
+                    " n'existe pas. Utilisez une requête POST pour en ajouter un nouveau.")
         return service.ajouter(trajet)
     }
 
