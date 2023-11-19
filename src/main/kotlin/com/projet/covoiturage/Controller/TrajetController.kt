@@ -20,7 +20,7 @@ class TrajetController( val service: TrajetService) {
 
     @Operation(summary = "Obtient un trajet d'un utilisateur")
     @GetMapping("/utilisateur/{idUtilisateur}/trajet/{idTrajet}")
-    fun getTrajetParutilisateur(@PathVariable idTrajet: Int, @PathVariable idUtilisateur: Int) : Trajet?{
+    fun getTrajetParUtilisateur(@PathVariable idTrajet: Int, @PathVariable idUtilisateur: Int) : Trajet?{
         if (service.chercherUtilisateur(idUtilisateur) == null)
             throw UtilisateurIntrouvableExc("L'utilisateur avec l'id $idUtilisateur est introuvable.")
         else if  (service.chercherTrajetParUtilisateur(idTrajet, idUtilisateur) == null)

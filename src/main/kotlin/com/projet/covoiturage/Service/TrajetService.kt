@@ -1,9 +1,9 @@
 package com.projet.covoiturage.Service
 
 import com.projet.covoiturage.DAO.TrajetDAO
-import com.projet.covoiturage.Model.Reservation
+
 import com.projet.covoiturage.Model.Trajet
-import com.projet.covoiturage.Model.Utilisateur
+
 import org.springframework.stereotype.Service
 
 @Service

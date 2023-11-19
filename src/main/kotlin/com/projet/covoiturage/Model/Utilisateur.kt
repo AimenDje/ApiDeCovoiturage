@@ -3,7 +3,7 @@ package com.projet.covoiturage.Model
 import jakarta.persistence.*
 
 @Entity
-class Utilisateur (
+data class Utilisateur (
         @GeneratedValue(strategy = GenerationType.IDENTITY)
         @Id
         val utilisateurId: Int?,

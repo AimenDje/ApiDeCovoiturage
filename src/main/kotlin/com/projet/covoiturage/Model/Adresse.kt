@@ -6,7 +6,7 @@ import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
 
 @Entity
-class Adresse (
+data class Adresse (
         @GeneratedValue(strategy = GenerationType.IDENTITY)
         @Id
         val adresseId: Int?,
