@@ -1,6 +1,7 @@
 package com.projet.covoiturage.DAO
 
 
+import com.projet.covoiturage.Model.Reservation
 import com.projet.covoiturage.Model.Trajet
 import com.projet.covoiturage.Model.Utilisateur
 
