@@ -14,7 +14,6 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
 
-
 import com.projet.covoiturage.Model.Reservation
 import com.projet.covoiturage.Model.Utilisateur
 import com.fasterxml.jackson.databind.ObjectMapper
@@ -158,6 +157,7 @@ class ReservationControllerTest {
     fun testReservationAcceptee() {
         val reservation = Reservation(1, null, 66, null, null, true)
         val utilisateur = Utilisateur(1, "ML", "Gabriel", "courriel", "4380000000", null, true)
+        Mockito.`when`(service.chercherUtilisateur(1)).thenReturn(utilisateur)
         Mockito.`when`(service.chercherReservationChaufeur(1)).thenReturn(reservation)
 
         mockMvc.perform(get("/chauffeur/1/reservation"))
@@ -169,12 +169,32 @@ class ReservationControllerTest {
     @Test
     // @GetMapping("/chauffeur/{id}/reservation")
     // Exception
+            /*
+            Étant donné le chauffeur dont le code est 1 qui n'a pas accepté de réservation lorsqu'on effectue une requête GET
+            de recherche par code alors on obtient un code de retour 404
+             */
+    fun testReservationAccepteeExc() {
+        Mockito.`when`(service.chercherUtilisateur(1)).thenReturn(null)
+
+        mockMvc.perform(get("/chauffeur/1/reservation")
+            .contentType(MediaType.APPLICATION_JSON))
+            .andExpect(status().isNotFound)
+            .andExpect { resultat ->
+                assertTrue(resultat.resolvedException is UtilisateurIntrouvableExc)
+                assertEquals("L'utilisateur avec l'id 1 est introuvable.", resultat.resolvedException?.message)
+            }
+    }
+
+    @Test
+    // @GetMapping("/chauffeur/{id}/reservation")
+    // Exception
     /*
     Étant donné le chauffeur dont le code est 1 qui n'a pas accepté de réservation lorsqu'on effectue une requête GET
     de recherche par code alors on obtient un code de retour 404
      */
-    fun testReservationAccepteeExc() {
+    fun testReservationAccepteeExc2() {
         val utilisateur = Utilisateur(1, "ML", "Gabriel", "courriel", "4380000000", null, true)
+        Mockito.`when`(service.chercherUtilisateur(1)).thenReturn(utilisateur)
         Mockito.`when`(service.chercherReservationChaufeur(1)).thenReturn(null)
 
         mockMvc.perform(get("/chauffeur/1/reservation")
@@ -198,6 +218,7 @@ class ReservationControllerTest {
         val reservation2 = Reservation(2, null, 99, null, null, true)
         val utilisateur = Utilisateur(1, "ML", "Gabriel", "courriel", "4380000000", null, true)
         val list: List<Reservation> = listOf(reservation, reservation2)
+        Mockito.`when`(service.chercherUtilisateur(1)).thenReturn(utilisateur)
         Mockito.`when`(service.chercherReservationsParUtilisateur(1)).thenReturn(list)
 
         mockMvc.perform(get("/utilisateur/1/reservations"))
@@ -215,9 +236,8 @@ class ReservationControllerTest {
     obtient un JSON qui contient 2 réservations dont le code est 1 et 2 et un code de retour 200
      */
     fun testReservationsUtilisateurExc() {
-
-        val utilisateur = Utilisateur(1, "ML", "Gabriel", "courriel", "4380000000", null, true)
         val list: List<Reservation> = listOf()
+        Mockito.`when`(service.chercherUtilisateur(1)).thenReturn(null)
         Mockito.`when`(service.chercherReservationsParUtilisateur(1)).thenReturn(list)
 
         mockMvc.perform(get("/utilisateur/1/reservations")
@@ -227,6 +247,28 @@ class ReservationControllerTest {
                     assertTrue(resultat.resolvedException is UtilisateurIntrouvableExc)
                     assertEquals("L'utilisateur avec l'id 1 est introuvable.", resultat.resolvedException?.message)
                 }
+    }
+
+    @Test
+    // @GetMapping("/utilisateur/{id}/reservations")
+    // Exception
+    /*
+    Étant donné le passager dont le code est 1 lorsqu'on effectue une requête GET de recherche par code alors on
+    obtient un JSON qui contient 2 réservations dont le code est 1 et 2 et un code de retour 200
+     */
+    fun testReservationsUtilisateurExc2() {
+        val utilisateur = Utilisateur(1, "ML", "Gabriel", "courriel", "4380000000", null, true)
+        val list: List<Reservation> = listOf()
+        Mockito.`when`(service.chercherUtilisateur(1)).thenReturn(utilisateur)
+        Mockito.`when`(service.chercherReservationsParUtilisateur(1)).thenReturn(list)
+
+        mockMvc.perform(get("/utilisateur/1/reservations")
+            .contentType(MediaType.APPLICATION_JSON))
+            .andExpect(status().isNotFound)
+            .andExpect { resultat ->
+                assertTrue(resultat.resolvedException is ReservationsIntrouvablesExc)
+                assertEquals("L'utilisateur avec l'id 1 n'a effectué aucune réservation pour le moment.", resultat.resolvedException?.message)
+            }
     }
 
     @Test
@@ -240,6 +282,7 @@ class ReservationControllerTest {
     fun testReservationParUtilisateur() {
         val reservation = Reservation(1, null, 66, null, null, false)
         val utilisateur = Utilisateur(1, "ML", "Gabriel", "courriel", "4380000000", null, true)
+        Mockito.`when`(service.chercherUtilisateur(1)).thenReturn(utilisateur)
         Mockito.`when`(service.chercherReservationParUtilisateur(1, 1)).thenReturn(reservation)
 
         mockMvc.perform(get("/utilisateur/1/reservation/1"))
@@ -251,12 +294,32 @@ class ReservationControllerTest {
     @Test
     // @GetMapping("/utilisateur/{idUtilisateur}/reservation/{idReservation}")
     // Exception
+            /*
+            Étant donné le passager dont le code est 1 et la réservation dont le code 1 qui n'existe pas lorsqu'on effectue
+            une requête GET de recherche par code alors on obtient un code de retour 404
+            */
+    fun testReservationParUtilisateurExc() {
+        Mockito.`when`(service.chercherUtilisateur(1)).thenReturn(null)
+
+        mockMvc.perform(get("/utilisateur/1/reservation/1")
+            .contentType(MediaType.APPLICATION_JSON))
+            .andExpect(status().isNotFound)
+            .andExpect { resultat ->
+                assertTrue(resultat.resolvedException is UtilisateurIntrouvableExc)
+                assertEquals("L'utilisateur avec l'id 1 est introuvable.", resultat.resolvedException?.message)
+            }
+    }
+
+    @Test
+    // @GetMapping("/utilisateur/{idUtilisateur}/reservation/{idReservation}")
+    // Exception
     /*
     Étant donné le passager dont le code est 1 et la réservation dont le code 1 qui n'existe pas lorsqu'on effectue
     une requête GET de recherche par code alors on obtient un code de retour 404
     */
-    fun testReservationParUtilisateurExc() {
+    fun testReservationParUtilisateurExc2() {
         val utilisateur = Utilisateur(1, "ML", "Gabriel", "courriel", "4380000000", null, true)
+        Mockito.`when`(service.chercherUtilisateur(1)).thenReturn(utilisateur)
         Mockito.`when`(service.chercherReservationParUtilisateur(1, 1)).thenReturn(null)
 
         mockMvc.perform(get("/utilisateur/1/reservation/1")
@@ -359,7 +422,6 @@ class ReservationControllerTest {
     supprimer la réservation alors la réservation est supprimée et un code de retour 200
     */
     fun testSupprimerReservation() {
-        val reservation = Reservation(1, null, 66, null, null, false)
         Mockito.`when`(service.supprimer(1)).thenReturn(true)
 
         mockMvc.perform(delete("/reservation/1")
@@ -377,7 +439,6 @@ class ReservationControllerTest {
     supprimer la réservation alors un code de retour 404 est retourné
     */
     fun testSupprimerReservationExc() {
-        val reservation = Reservation(1, null, 66, null, null, false)
         Mockito.`when`(service.supprimer(1)).thenReturn(false)
 
         mockMvc.perform(delete("/reservation/1")
