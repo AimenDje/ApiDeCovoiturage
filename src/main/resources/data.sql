@@ -5,7 +5,7 @@ VALUES
 
 INSERT INTO covoituragedb.utilisateur(adresse_id, est_passager, courriel, nom, prenom, telephone)
 VALUES
-    (1, 1, 'joebiden@videotron.com', 'Biden', 'Joe', '5140000000'),
+    (1, 0, 'joebiden@videotron.com', 'Biden', 'Joe', '5140000000'),
     (2, 1, 'trudeau@hotmail.com', 'Trudeau', 'Justin', '4380000000');
 
 INSERT INTO covoituragedb.trajet(adresse_arrivee_id, adresse_depart_id, nom, utilisateur_id)
