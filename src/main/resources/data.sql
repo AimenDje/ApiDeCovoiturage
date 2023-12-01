@@ -5,8 +5,8 @@ VALUES
 
 INSERT INTO covoituragedb.utilisateur(adresse_id, est_passager, courriel, nom, prenom, telephone, tokenId)
 VALUES
-    (1, 0, 'joebiden@videotron.com', 'Biden', 'Joe', '5140000000', 'auth0|6569f4294178aefc033fbf2c'),
-    (2, 1, 'trudeau@hotmail.com', 'Trudeau', 'Justin', '4380000000', 'auth0|6569f4e63cc081e25d1d279b');
+    (1, 0, 'biden@biden.com', 'Biden', 'Joe', '5140000000', 'auth0|656a124e6a822f7ee8384799'),
+    (2, 1, 'trudeau@trudeau.com', 'Trudeau', 'Justin', '4380000000', 'auth0|656a127ca19599c92097aaeb');
 
 INSERT INTO covoituragedb.trajet(adresse_arrivee_id, adresse_depart_id, nom, utilisateur_id)
 VALUES
