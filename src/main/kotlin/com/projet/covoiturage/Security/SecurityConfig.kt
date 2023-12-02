@@ -29,7 +29,7 @@ class SecurityConfig {
         http {
             authorizeHttpRequests {
                 authorize("/", permitAll)
-                authorize(HttpMethod.GET, "/**", permitAll)
+                authorize(HttpMethod.GET, "/**", authenticated)
                 authorize(HttpMethod.POST, "/**", authenticated)
                 authorize(HttpMethod.PUT, "/**", authenticated)
                 authorize(HttpMethod.DELETE, "/**", authenticated)

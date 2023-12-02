@@ -13,4 +13,10 @@ interface ReservationDAO : DAO<Reservation> {
     fun chercherReservationChauffeur(id: Int): Reservation?
     fun accepterReservation(idReservation: Int, idChauffeur: Int): Reservation?
     fun chercherUtilisateur(id: Int): Utilisateur?
+    fun validerChauffeur(userId: String): Boolean
+    fun validerChauffeurEtId(id: Int, userId: String): Boolean
+    fun validerPassagerEtId(id: Int, userId: String): Boolean
+    fun validerPassager(userId: String): Boolean
+    fun validerReservation(reservation: Reservation, userId: String): Boolean
+    fun validerSuppression(idReservation: Int, userId: String): Boolean
 }

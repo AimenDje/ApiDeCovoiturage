@@ -46,4 +46,36 @@ class ReservationDAOImplMemoire(val repo: ReservationRepo, val repoUser: Utilisa
             return repoUser.findById(id).get()
         return null
     }
+
+    override fun validerChauffeur(userId: String): Boolean {
+        val user = repoUser.findUtilisateurByTokenId(userId)
+        return !user.estPassager
+    }
+
+    override fun validerChauffeurEtId(id: Int, userId: String): Boolean {
+        val user = repoUser.findUtilisateurByTokenId(userId)
+        return !user.estPassager && user.utilisateurId == id
+    }
+
+    override fun validerPassagerEtId(id: Int, userId: String): Boolean {
+        val user = repoUser.findUtilisateurByTokenId(userId)
+        return user.estPassager && user.utilisateurId == id
+    }
+
+    override fun validerPassager(userId: String): Boolean {
+        val user = repoUser.findUtilisateurByTokenId(userId)
+        return user.estPassager
+    }
+
+    override fun validerReservation(reservation: Reservation, userId: String): Boolean {
+        val user = repoUser.findUtilisateurByTokenId(userId)
+        return user.utilisateurId == reservation.trajet?.utilisateur?.utilisateurId
+    }
+
+    override fun validerSuppression(idReservation: Int, userId: String): Boolean {
+        val user = repoUser.findUtilisateurByTokenId(userId)
+        val reservation = repo.findById(idReservation)
+        return user.utilisateurId == reservation.get().trajet?.utilisateur?.utilisateurId
+    }
+
 }
