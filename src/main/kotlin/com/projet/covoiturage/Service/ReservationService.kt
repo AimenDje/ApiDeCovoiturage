@@ -35,8 +35,8 @@ class ReservationService(val dao: ReservationDAO) {
     fun ajouter(reservation: Reservation, userId: String): Reservation? {
         if (!dao.validerPassager(userId))
             throw DroitInsuffisantExc("Seuls un passager peut ajouter une réservation.")
-        if (!dao.validerReservation(reservation, userId))
-            throw NonAuthoriseExc("L'utilisateur qui crée la réservation doit être le même que celui dans la réservation.")
+        /*if (!dao.validerReservation(reservation, userId))
+            throw NonAuthoriseExc("L'utilisateur qui crée la réservation doit être le même que celui dans la réservation.")*/
         return dao.ajouter(reservation)
     }
 
@@ -44,7 +44,7 @@ class ReservationService(val dao: ReservationDAO) {
         if (!dao.validerPassager(userId))
             throw DroitInsuffisantExc("Seuls un passager peut supprimer une réservation.")
         if (!dao.validerSuppression(id, userId))
-            throw NonAuthoriseExc("Seul le propriétaire de cette réservation ")
+            throw NonAuthoriseExc("Seul le propriétaire de cette réservation peut la supprimer")
         return dao.supprimer(id)
     }
 

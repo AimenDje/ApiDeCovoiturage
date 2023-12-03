@@ -11,8 +11,9 @@ VALUES
 INSERT INTO covoituragedb.trajet(adresse_arrivee_id, adresse_depart_id, nom, utilisateur_id)
 VALUES
     (2, 1, 'Travail', 1),
-    (1, 2, 'Maison', 1);
+    (1, 2, 'Maison', 1),
+    (1, 2, 'Travail', 2);
 
-INSERT INTO covoituragedb.reservation(nombre_passager, trajet_id, heure_depart)
+    INSERT INTO covoituragedb.reservation(nombre_passager, trajet_id, heure_depart)
 VALUES
     (4, 1, '2023-11-08 13:00:00')
