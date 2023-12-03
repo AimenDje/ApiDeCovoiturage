@@ -79,7 +79,7 @@ class ReservationController(val service: ReservationService) {
     fun addReservation(@RequestBody reservation: Reservation, principal: Principal): Reservation? {
         val resultat = service.ajouter(reservation, principal.name)
         if (resultat == null)
-            throw MauvaiseFormulationObjetExc("La réservation que vous essayez d'ajouter n'est pas formulée" +
+            throw MauvaiseFormulationObjetExc("La réservation que vous essayez d'ajouter n'est pas formulée " +
                     "correctement.")
         else
             return resultat
