@@ -1,6 +1,6 @@
 package com.projet.covoiturage.DAO
 
-import com.projet.covoiturage.Model.Reservation
+
 import com.projet.covoiturage.Model.Trajet
 import com.projet.covoiturage.Model.Utilisateur
 
@@ -14,8 +14,10 @@ interface TrajetDAO : DAO<Trajet> {
     override fun chercherTous(): List<Trajet>
     override fun chercherParId(id: Int): Trajet?
     override fun ajouter(t: Trajet): Trajet?
-
     override fun supprimer(id: Int): Boolean
-
+    fun validerTrajet(trajet: Trajet, userId: String): Boolean
+    fun validerPassager(userId: String): Boolean
+    fun validerPassagerEtId(id: Int, userId: String): Boolean
+    fun validerSuppression(idTrajet: Int, userId: String): Boolean
     fun chercherUtilisateur(id: Int): Utilisateur?
 }

@@ -1,7 +1,6 @@
 package com.projet.covoiturage.DAO
 
 
-import com.projet.covoiturage.Model.Reservation
 import com.projet.covoiturage.Model.Trajet
 import com.projet.covoiturage.Model.Utilisateur
 
@@ -33,10 +32,34 @@ class TrajetDAOImplMemoire ( val repo: TrajetRepo, val repoUser: UtilisateurRepo
         } else
             return false
     }
+
     override fun chercherUtilisateur(id: Int): Utilisateur? {
         if (repoUser.findById(id).isPresent)
             return repoUser.findById(id).get()
         return null
     }
+
+    override fun validerPassagerEtId(id: Int, userId: String): Boolean {
+        val user = repoUser.findUtilisateurByTokenId(userId)
+        return user.estPassager && user.utilisateurId == id
+    }
+
+    override fun validerPassager(userId: String): Boolean {
+        val user = repoUser.findUtilisateurByTokenId(userId)
+        return user.estPassager
+    }
+
+    override fun validerTrajet(trajet: Trajet, userId: String): Boolean {
+        val user = repoUser.findUtilisateurByTokenId(userId)
+        return user.utilisateurId == trajet?.utilisateur?.utilisateurId
+    }
+
+    override fun validerSuppression(idTrajet: Int, userId: String): Boolean {
+        val user = repoUser.findUtilisateurByTokenId(userId)
+        val trajet = repo.findById(idTrajet)
+        return user.utilisateurId == trajet.get().utilisateur?.utilisateurId
+    }
+
+
 
 }
