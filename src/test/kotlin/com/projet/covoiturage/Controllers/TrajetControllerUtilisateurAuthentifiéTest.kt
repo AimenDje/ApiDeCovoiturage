@@ -3,7 +3,6 @@ package com.projet.covoiturage.Controllers
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.projet.covoiturage.Exception.*
 import com.projet.covoiturage.Model.Adresse
-import com.projet.covoiturage.Model.Reservation
 import com.projet.covoiturage.Model.Trajet
 import com.projet.covoiturage.Model.Utilisateur
 import com.projet.covoiturage.Service.TrajetService
@@ -296,7 +295,7 @@ class TrajetControllerUtilisateurAuthentifiéTest {
         val trajet = Trajet(8000, null, null, null, null)
         Mockito.`when`(service.supprimer(8000, "mahrez")).thenReturn(false)
 
-        mockMvc.perform(delete("/trajet/8000")
+        mockMvc.perform(delete("/trajet/8000").with(csrf())
             .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isNotFound)
             .andExpect { resultat ->
