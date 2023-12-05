@@ -19,7 +19,7 @@ class TrajetService (val dao: TrajetDAO){
     }
 
     fun chercherTrajetParUtilisateur(idTrajet: Int, idUtilisateur: Int, userId: String): Trajet? {
-        if(dao.validerPassagerEtId(idTrajet, userId))
+        if(dao.validerPassagerEtId(idUtilisateur, userId))
             return dao.chercherTrajetParUtilisateur(idTrajet, idUtilisateur)
         else
             throw DroitInsuffisantExc("Seul un passager avec l'id $idUtilisateur peut accéder à ses trajets")

@@ -32,6 +32,10 @@ class TrajetController( val service: TrajetService) {
         return service.chercherTrajetParUtilisateur(idTrajet,idUtilisateur, principal.name)
     }
 
+
+
+
+
     @Operation(summary = "Obtient un trajet avec son id")
     @GetMapping("/trajet/{id}")
     fun getTrajetParId(@PathVariable id: Int): Trajet? {
