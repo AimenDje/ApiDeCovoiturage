@@ -29,6 +29,9 @@ class SecurityConfig {
         http {
             authorizeHttpRequests {
                 authorize("/", permitAll)
+                authorize("/api-docs/**", permitAll)
+                authorize("/documentation", permitAll)
+                authorize("/swagger-ui/**", permitAll)
                 authorize(HttpMethod.GET, "/**", authenticated)
                 authorize(HttpMethod.POST, "/**", authenticated)
                 authorize(HttpMethod.PUT, "/**", authenticated)
