@@ -33,7 +33,7 @@ class TrajetController( val service: TrajetService) {
 
 
     @Operation(
-        summary = "Obtient un trajet d'un utilisateur",
+        summary = "Obtient un trajet d'un passager",
         description = "Retourne un trajet en cherchant par code de passager & code de trajet",
         operationId = "getTrajetParUtilisateur",
         responses = [
