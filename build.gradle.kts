@@ -25,8 +25,16 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-web")
 	implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
-	runtimeOnly("com.h2database:h2")
+	runtimeOnly("com.mysql:mysql-connector-j")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
+	implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.2.0")
+	//implementation("org.springframework.boot:spring-boot-devtools:3.1.5")
+	implementation("org.springframework.boot:spring-boot-starter-security")
+	implementation("org.springframework.security:spring-security-oauth2-resource-server")
+	implementation("org.springframework.security:spring-security-oauth2-jose")
+	implementation("org.springframework.security:spring-security-config")
+	implementation("org.springframework.security:spring-security-test")
+
 }
 
 tasks.withType<KotlinCompile> {
