@@ -6,7 +6,8 @@ import com.projet.covoiturage.Service.ReservationService
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.tags.Tag
 import io.swagger.v3.oas.annotations.responses.ApiResponse
-import org.springframework.ui.Model
+import org.springframework.http.HttpStatus
+import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import java.security.Principal
 
@@ -148,13 +149,13 @@ class ReservationController(val service: ReservationService) {
         ]
     )
     @PostMapping("/reservation")
-    fun addReservation(@RequestBody reservation: Reservation, principal: Principal): Reservation? {
+    fun addReservation(@RequestBody reservation: Reservation, principal: Principal): ResponseEntity<Reservation> {
         val resultat = service.ajouter(reservation, principal.name)
         if (resultat == null)
             throw MauvaiseFormulationObjetExc("La réservation que vous essayez d'ajouter n'est pas formulée " +
                     "correctement.")
         else
-            return resultat
+            return ResponseEntity.status(HttpStatus.CREATED).body(resultat)
     }
 
     @Operation(
@@ -186,10 +187,10 @@ class ReservationController(val service: ReservationService) {
         ]
     )
     @DeleteMapping("/reservation/{id}")
-    fun deleteReservation(@PathVariable id: Int, principal: Principal): String {
+    fun deleteReservation(@PathVariable id: Int, principal: Principal): ResponseEntity<String> {
         if (!service.supprimer(id, principal.name))
             throw ReservationIntrouvableExc("La réservation l'id $id n'a pas pu être supprimée parce qu'elle " +
                     "n'existe pas.")
-        return "La réservation avec l'id $id a bien été supprimée."
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build()
     }
 }

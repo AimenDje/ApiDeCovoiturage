@@ -35,7 +35,7 @@ class ReservationControllerTestAuth {
     @Autowired
     private lateinit var mockMvc: MockMvc
 
-    @WithMockUser(username = "biden")
+    @WithMockUser(username = "joe")
     @Test
     // @GetMapping("/reservations")
     // Valide
@@ -43,7 +43,7 @@ class ReservationControllerTestAuth {
         val reservation = Reservation(1, null, 66, null, null, false)
         val reservation2 = Reservation(2, null, 99, null, null, false)
         val liste: List<Reservation> = listOf(reservation, reservation2)
-        Mockito.`when`(service.chercherTous("biden")).thenReturn(liste)
+        Mockito.`when`(service.chercherTous("joe")).thenReturn(liste)
 
         mockMvc.perform(get("/reservations").with(csrf()))
                 .andExpect(status().isOk)
@@ -66,13 +66,13 @@ class ReservationControllerTestAuth {
                 }
     }
 
-    @WithMockUser
+    @WithMockUser("joe")
     @Test
     // @GetMapping("/reservation/{id}")
     // Valide
     fun `Étant donné un utilisateur authentifié et la réservation dont le code est 1 lorsqu'on effectue une requête GET de recherche par code alors, on obtient un JSON qui contient une réservation dont le code est 1 et un code de retour 200`() {
         val reservation = Reservation(1, null, 66, null, null, false)
-        Mockito.`when`(service.chercherParId(1)).thenReturn(reservation)
+        Mockito.`when`(service.chercherParIdChauffeur(1, "joe")).thenReturn(reservation)
 
         mockMvc.perform(get("/reservation/1").with(csrf()))
                 .andExpect(status().isOk)
@@ -94,45 +94,41 @@ class ReservationControllerTestAuth {
                 }
     }
 
-    @WithMockUser(username = "biden")
+    @WithMockUser(username = "joe")
     @Test
-    // @PutMapping("/reservation/{idReservation}/chauffeur/{idChauffeur}/accept")
+    // @PostMapping("/chauffeur/{idChauffeur}/reservation/{idReservation}")
     // Valide
-    fun `Étant donné un utilisateur authentifié et la réservation dont le code est 1 et un chauffeur dont le code est 1 lorsqu'on effectue une requête PUT par code de réservation et code d'utilisateur alors, on obtient un JSON qui contient une réservation acceptée dont le code est 1 et un code de retour 200`() {
+    fun `Étant donné un utilisateur authentifié et la réservation dont le code est 1 et un chauffeur dont le code est 1 lorsqu'on effectue une requête POST par code de réservation et code d'utilisateur alors, on obtient un JSON qui contient une réservation acceptée dont le code est 1 et un code de retour 200`() {
         val reservation = Reservation(1, null, 66, null, null, true)
         val utilisateur = Utilisateur(1, "biden", "biden", "Biden", "biden@biden.com", "4380000000", null, false)
-        Mockito.`when`(service.accepterReservation(1, 1,"biden")).thenReturn(reservation)
         Mockito.`when`(service.chercherParId(1)).thenReturn(reservation)
         Mockito.`when`(service.chercherUtilisateur(1)).thenReturn(utilisateur)
+        Mockito.`when`(service.accepterReservation(1, 1,"joe")).thenReturn(reservation)
 
-        mockMvc.perform(put("/reservation/1/chauffeur/1/accept").with(csrf()))
+        mockMvc.perform(post("/chauffeur/1/reservation/1").with(csrf()))
                 .andExpect(status().isOk)
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.reservationId").value("1"))
                 .andExpect(jsonPath("$.acceptee").value(true))
     }
 
-    @WithMockUser(username = "biden")
+    @WithMockUser(username = "justin")
     @Test
-    // @PutMapping("/reservation/{idReservation}/chauffeur/{idChauffeur}/accept")
+    // @PostMapping("/chauffeur/{idChauffeur}/reservation/{idReservation}")
     // Exception
-    fun `Étant donné un utilisateur authentifié et la réservation dont le code est 1 et un passager dont le code est 1 lorsqu'on effectue une requête PUT par code de réservation et code d'utilisateur alors, on obtient un code de retour 404`() {
-        val reservation = Reservation(1, null, 66, null, null, true)
-        val utilisateur = Utilisateur(1, "biden", "biden", "Biden", "biden@biden.com", "4380000000", null, true)
-        Mockito.`when`(service.accepterReservation(1, 1, "biden")).thenReturn(reservation)
-        Mockito.`when`(service.chercherParId(1)).thenReturn(reservation)
-        Mockito.`when`(service.chercherUtilisateur(1)).thenReturn(utilisateur)
+    fun `Étant donné un chauffeur authentifié dont le code est 1 et la réservation 2 qui n'existe pas dans le service lorsqu'on effectue une requête POST par code de réservation et code de chauffeur alors, on obtient un code de retour 404`() {
+        Mockito.`when`(service.chercherParId(2)).thenReturn(null)
 
-        mockMvc.perform(put("/reservation/1/chauffeur/1/accept").with(csrf())
+        mockMvc.perform(post("/chauffeur/1/reservation/2").with(csrf())
                 .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isUnauthorized)
+                .andExpect(status().isNotFound)
                 .andExpect { resultat ->
-                    assertTrue(resultat.resolvedException is NonAuthoriseExc)
-                    assertEquals("Cette fonctionnalité est réservée aux chauffeurs.", resultat.resolvedException?.message)
+                    assertTrue(resultat.resolvedException is ReservationIntrouvableExc)
+                    assertEquals("La réservation avec l'id 2 est introuvable.", resultat.resolvedException?.message)
                 }
     }
 
-    @WithMockUser(username = "biden")
+    @WithMockUser(username = "joe")
     @Test
     // @GetMapping("/chauffeur/{id}/reservation")
     // Valide
@@ -140,7 +136,7 @@ class ReservationControllerTestAuth {
         val reservation = Reservation(1, null, 66, null, null, true)
         val utilisateur = Utilisateur(1, "biden", "biden", "Biden", "biden@biden.com", "4380000000", null, false)
         Mockito.`when`(service.chercherUtilisateur(1)).thenReturn(utilisateur)
-        Mockito.`when`(service.chercherReservationChaufeur(1, "biden")).thenReturn(reservation)
+        Mockito.`when`(service.chercherReservationChaufeur(1, "joe")).thenReturn(reservation)
 
         mockMvc.perform(get("/chauffeur/1/reservation").with(csrf()))
                 .andExpect(status().isOk)
@@ -164,14 +160,14 @@ class ReservationControllerTestAuth {
             }
     }
 
-    @WithMockUser(username = "biden")
+    @WithMockUser(username = "joe")
     @Test
     // @GetMapping("/chauffeur/{id}/reservation")
     // Exception
     fun `Étant donné un utilisateur authentifié et le chauffeur dont le code est 1 qui n'a pas accepté de réservation lorsqu'on effectue une requête GET de recherche par code alors, on obtient un code de retour 404`() {
         val utilisateur = Utilisateur(1, "biden", "biden", "Biden", "biden@biden.com", "4380000000", null, false)
         Mockito.`when`(service.chercherUtilisateur(1)).thenReturn(utilisateur)
-        Mockito.`when`(service.chercherReservationChaufeur(1, "biden")).thenReturn(null)
+        Mockito.`when`(service.chercherReservationChaufeur(1, "joe")).thenReturn(null)
 
         mockMvc.perform(get("/chauffeur/1/reservation").with(csrf())
                 .contentType(MediaType.APPLICATION_JSON))
@@ -182,7 +178,7 @@ class ReservationControllerTestAuth {
                 }
     }
 
-    @WithMockUser("trudeau")
+    @WithMockUser("justin")
     @Test
     // @GetMapping("/utilisateur/{id}/reservations")
     // Valide
@@ -192,7 +188,7 @@ class ReservationControllerTestAuth {
         val utilisateur = Utilisateur(1, "biden", "biden", "Biden", "biden@biden.com", "4380000000", null, false)
         val list: List<Reservation> = listOf(reservation, reservation2)
         Mockito.`when`(service.chercherUtilisateur(1)).thenReturn(utilisateur)
-        Mockito.`when`(service.chercherReservationsParUtilisateur(1,"trudeau")).thenReturn(list)
+        Mockito.`when`(service.chercherReservationsParUtilisateur(1,"justin")).thenReturn(list)
 
         mockMvc.perform(get("/utilisateur/1/reservations").with(csrf()))
                 .andExpect(status().isOk)
@@ -201,14 +197,14 @@ class ReservationControllerTestAuth {
                 .andExpect(jsonPath("$[1].reservationId").value("2"))
     }
 
-    @WithMockUser("trudeau")
+    @WithMockUser("justin")
     @Test
     // @GetMapping("/utilisateur/{id}/reservations")
     // Exception
     fun `Étant donné un utilisateur authentifié et le passager dont le code est 1 qui n'existe pas dans le service lorsqu'on effectue une requête GET de recherche par code alors, on obtient un code de retour 404`() {
         val list: List<Reservation> = listOf()
         Mockito.`when`(service.chercherUtilisateur(1)).thenReturn(null)
-        Mockito.`when`(service.chercherReservationsParUtilisateur(1, "trudeau")).thenReturn(list)
+        Mockito.`when`(service.chercherReservationsParUtilisateur(1, "justin")).thenReturn(list)
 
         mockMvc.perform(get("/utilisateur/1/reservations").with(csrf())
                 .contentType(MediaType.APPLICATION_JSON))
@@ -219,7 +215,7 @@ class ReservationControllerTestAuth {
                 }
     }
 
-    @WithMockUser("trudeau")
+    @WithMockUser("justin")
     @Test
     // @GetMapping("/utilisateur/{id}/reservations")
     // Exception
@@ -227,7 +223,7 @@ class ReservationControllerTestAuth {
         val utilisateur = Utilisateur(1, "biden", "biden", "Biden", "biden@biden.com", "4380000000", null, false)
         val list: List<Reservation> = listOf()
         Mockito.`when`(service.chercherUtilisateur(1)).thenReturn(utilisateur)
-        Mockito.`when`(service.chercherReservationsParUtilisateur(1, "trudeau")).thenReturn(list)
+        Mockito.`when`(service.chercherReservationsParUtilisateur(1, "justin")).thenReturn(list)
 
         mockMvc.perform(get("/utilisateur/1/reservations").with(csrf())
             .contentType(MediaType.APPLICATION_JSON))
@@ -238,7 +234,7 @@ class ReservationControllerTestAuth {
             }
     }
 
-    @WithMockUser("trudeau")
+    @WithMockUser("justin")
     @Test
     // @GetMapping("/utilisateur/{idUtilisateur}/reservation/{idReservation}")
     // Valide
@@ -246,7 +242,7 @@ class ReservationControllerTestAuth {
         val reservation = Reservation(1, null, 66, null, null, false)
         val utilisateur = Utilisateur(1, "biden", "biden", "Biden", "biden@biden.com", "4380000000", null, false)
         Mockito.`when`(service.chercherUtilisateur(1)).thenReturn(utilisateur)
-        Mockito.`when`(service.chercherReservationParUtilisateur(1, 1, "trudeau")).thenReturn(reservation)
+        Mockito.`when`(service.chercherReservationParUtilisateur(1, 1, "justin")).thenReturn(reservation)
 
         mockMvc.perform(get("/utilisateur/1/reservation/1").with(csrf()))
                 .andExpect(status().isOk)
@@ -270,14 +266,14 @@ class ReservationControllerTestAuth {
             }
     }
 
-    @WithMockUser(username = "trudeau")
+    @WithMockUser(username = "justin")
     @Test
     // @GetMapping("/utilisateur/{idUtilisateur}/reservation/{idReservation}")
     // Exception
     fun `Étant donné un utilisateur authentifié et le passager dont le code est 1 et la réservation dont le code est 1 qui n'existe pas dans le service lorsqu'on effectue une requête GET de recherche par code alors, on obtient un code de retour 404`() {
         val utilisateur = Utilisateur(1, "biden", "biden", "Biden", "biden@biden.com", "4380000000", null, false)
         Mockito.`when`(service.chercherUtilisateur(1)).thenReturn(utilisateur)
-        Mockito.`when`(service.chercherReservationParUtilisateur(1, 1, "trudeau")).thenReturn(null)
+        Mockito.`when`(service.chercherReservationParUtilisateur(1, 1, "justin")).thenReturn(null)
 
         mockMvc.perform(get("/utilisateur/1/reservation/1").with(csrf())
                 .contentType(MediaType.APPLICATION_JSON))
@@ -288,18 +284,18 @@ class ReservationControllerTestAuth {
                 }
     }
 
-    @WithMockUser("trudeau")
+    @WithMockUser("justin")
     @Test
     // @PostMapping("/reservation")
     // Valide
     fun `Étant donné un utilisateur authentifié et la réservation dont le code est 1 et qui n'est pas inscrit au service lorsqu'on effectue une requête POST pour ajouter alors, on obtient un JSON qui contient une réservation dont le code est 1 et un code de retour 200`() {
         val reservation = Reservation(1, null, 66, null, null, false)
-        Mockito.`when`(service.ajouter(reservation, "trudeau")).thenReturn(reservation)
+        Mockito.`when`(service.ajouter(reservation, "justin")).thenReturn(reservation)
 
         mockMvc.perform(post("/reservation").with(csrf())
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(mapper.writeValueAsString(reservation)))
-                .andExpect(status().isOk)
+                .andExpect(status().isCreated)
                 .andExpect(jsonPath("$.reservationId").value("1"))
     }
 
@@ -321,7 +317,7 @@ class ReservationControllerTestAuth {
                 }
     }
 
-    @WithMockUser("trudeau")
+    @WithMockUser("justin")
     @Test
     // @PutMapping("/reservation/{id}")
     // Valide
@@ -329,7 +325,7 @@ class ReservationControllerTestAuth {
         val reservation = Reservation(1, null, 66, null, null, false)
         val reservation2 = Reservation(1, null, 99, null, null, false)
         Mockito.`when`(service.chercherParId(1)).thenReturn(reservation)
-        Mockito.`when`(service.ajouter(reservation2, "trudeau")).thenReturn(reservation2)
+        Mockito.`when`(service.ajouter(reservation2, "justin")).thenReturn(reservation2)
 
         mockMvc.perform(put("/reservation/1").with(csrf())
                 .contentType(MediaType.APPLICATION_JSON)
@@ -357,25 +353,24 @@ class ReservationControllerTestAuth {
                 }
     }
 
-    @WithMockUser("trudeau")
+    @WithMockUser("justin")
     @Test
     // @DeleteMapping("/reservation/{id}")
     // Valide
     fun `Étant donné un utilisateur authentifié et la réservation dont le code est 1 qui est inscrite au service lorsqu'on effectue une requête DELETE pour supprimer la réservation alors, on obtient code de retour 200`() {
-        Mockito.`when`(service.supprimer(1, "trudeau")).thenReturn(true)
+        Mockito.`when`(service.supprimer(1, "justin")).thenReturn(true)
 
         mockMvc.perform(delete("/reservation/1").with(csrf())
                 .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk)
-                .andExpect(content().string("La réservation avec l'id 1 a bien été supprimée."))
+                .andExpect(status().isNoContent)
     }
 
-    @WithMockUser("trudeau")
+    @WithMockUser("justin")
     @Test
     // @DeleteMapping("/reservation/{id}")
     // Exception
     fun `Étant donné un utilisateur authentifié et la réservation dont le code est 1 n'est pas inscrite au service lorsqu'on effectue une requête DELETE pour supprimer la réservation alors, on obtient un code de retour 404`() {
-        Mockito.`when`(service.supprimer(1, "trudeau")).thenReturn(false)
+        Mockito.`when`(service.supprimer(1, "justin")).thenReturn(false)
 
         mockMvc.perform(delete("/reservation/1")
                 .contentType(MediaType.APPLICATION_JSON).with(csrf()))

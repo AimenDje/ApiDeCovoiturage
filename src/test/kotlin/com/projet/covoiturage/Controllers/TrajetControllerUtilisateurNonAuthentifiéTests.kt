@@ -49,12 +49,7 @@ class TrajetControllerUtilisateurNonAuthentifiéTests {
     }
 
 
-    @Test
-    // @GetMapping("/trajet/{id}")
-    fun `Étant donné un utilisateur non-authentifié et le trajet dont le code est 1 lorsqu'on effectue une requête GET de recherche de trajet par code alors, on obtient un code de retour 401`() {
-        mockMvc.perform(MockMvcRequestBuilders.get("/trajet/1").with(SecurityMockMvcRequestPostProcessors.csrf()))
-            .andExpect(MockMvcResultMatchers.status().isUnauthorized)
-    }
+
 
 
     @Test

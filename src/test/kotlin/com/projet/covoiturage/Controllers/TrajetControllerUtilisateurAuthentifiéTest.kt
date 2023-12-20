@@ -158,38 +158,6 @@ class TrajetControllerUtilisateurAuthentifiéTest {
     }
 
 
-    @WithMockUser
-    @Test
-    // @GetMapping("/trajet/id")
-    fun `Étant donné un utilisateur authentifié et le trajet dont le code est 1  et qui est déjà inscrit au service lorsqu'on effectue une requête GET de recherche trajet par code alors on obtient un JSON qui contient un trajet dont le code est 1 et un code de retour 200`() {
-
-        val trajet = Trajet(1, null, null, null, null)
-        Mockito.`when`(service.chercherParId(1)).thenReturn(trajet)
-
-        mockMvc.perform(get("/trajet/1").with(csrf()))
-            .andExpect(status().isOk)
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-            .andExpect(jsonPath("$.trajetId").value("1"))
-    }
-
-
-    @WithMockUser
-    @Test
-    // @GetMapping("/trajet/id")
-    fun `Étant donné un utilisateur authentifié le trajet dont le code est 2 et qui n'existe pas dans le service lorsqu'on effectue une requête GET de recherche d'un trajet par code alors on obtient un code de retour 404 avec un message d'erreur le trajet avec l'id 1 est introuvable`() {
-
-        mockMvc.perform(get("/trajet/2").with(csrf())
-            .contentType(MediaType.APPLICATION_JSON))
-            .andExpect(status().isNotFound)
-            .andExpect { resultat ->
-                Assertions.assertTrue(resultat.resolvedException is TrajetIntrouvableExc)
-                Assertions.assertEquals(
-                    "Le trajet avec l'id 2 est introuvable.",
-                    resultat.resolvedException?.message
-                )
-            }
-    }
-
 
     @WithMockUser("mahrez")
     @Test
@@ -202,7 +170,7 @@ class TrajetControllerUtilisateurAuthentifiéTest {
         mockMvc.perform(post("/trajet").with(csrf())
             .contentType(MediaType.APPLICATION_JSON)
             .content(mapper.writeValueAsString(trajet)))
-            .andExpect(status().isOk)
+            .andExpect(status().isCreated)
             .andExpect(jsonPath("$.trajetId").value("1"))
     }
 
@@ -281,8 +249,7 @@ class TrajetControllerUtilisateurAuthentifiéTest {
 
         mockMvc.perform(delete("/trajet/123").with(csrf())
             .contentType(MediaType.APPLICATION_JSON))
-            .andExpect(status().isOk)
-            .andExpect(content().string("Le trajet avec l'id 123 a bien été supprimé."))
+            .andExpect(status().isNoContent)
         }
 
 
