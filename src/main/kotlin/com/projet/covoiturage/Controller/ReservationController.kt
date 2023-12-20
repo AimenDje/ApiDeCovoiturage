@@ -6,6 +6,7 @@ import com.projet.covoiturage.Service.ReservationService
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.tags.Tag
 import io.swagger.v3.oas.annotations.responses.ApiResponse
+import org.springframework.ui.Model
 import org.springframework.web.bind.annotation.*
 import java.security.Principal
 
@@ -45,10 +46,10 @@ class ReservationController(val service: ReservationService) {
         ]
     )
     @GetMapping("/reservation/{idReservation}")
-    fun getReservationParId(@PathVariable idReservation: Int): Reservation? {
-        if (service.chercherParId(idReservation) == null)
+    fun getReservationParId(@PathVariable idReservation: Int, principal: Principal): Reservation? {
+        if (service.chercherParIdChauffeur(idReservation, principal.name) == null)
             throw ReservationIntrouvableExc("La réservation avec l'id $idReservation est introuvable.")
-        return service.chercherParId(idReservation)
+        return service.chercherParIdChauffeur(idReservation, principal.name)
     }
 
     @Operation(
@@ -63,15 +64,13 @@ class ReservationController(val service: ReservationService) {
             ApiResponse(responseCode = "403", description = "Réservé aux chauffeurs.")
         ]
     )
-    @PutMapping("/reservation/{idReservation}/chauffeur/{idChauffeur}/accept")
+    @PostMapping("/chauffeur/{idChauffeur}/reservation/{idReservation}")
     fun accepteReservation(@PathVariable idReservation: Int, @PathVariable idChauffeur: Int, principal: Principal): Reservation?
     {
         if (service.chercherParId(idReservation) == null)
             throw ReservationIntrouvableExc("La réservation avec l'id $idReservation est introuvable.")
         if (service.chercherUtilisateur(idChauffeur) == null)
             throw UtilisateurIntrouvableExc("Le chauffeur avec l'id $idChauffeur est introuvable.")
-        if (service.chercherUtilisateur(idChauffeur)!!.estPassager)
-            throw NonAuthoriseExc("Cette fonctionnalité est réservée aux chauffeurs.")
         return service.accepterReservation(idReservation, idChauffeur, principal.name)
     }
 

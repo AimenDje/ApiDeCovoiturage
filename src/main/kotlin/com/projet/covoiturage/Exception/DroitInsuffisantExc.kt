@@ -4,4 +4,4 @@ import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.ResponseStatus
 
 @ResponseStatus(HttpStatus.FORBIDDEN)
-class DroitInsuffisantExc(s: String?) : RuntimeException(s)
+class DroitInsuffisantExc(message: String? = null, cause: Throwable? = null) : RuntimeException(message, cause)

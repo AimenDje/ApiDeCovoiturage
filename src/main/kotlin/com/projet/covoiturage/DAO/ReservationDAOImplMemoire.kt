@@ -35,10 +35,13 @@ class ReservationDAOImplMemoire(val repo: ReservationRepo, val repoUser: Utilisa
         repo.findReservationByChauffeurUtilisateurIdAndAccepteeIsTrue(id);
 
     override fun accepterReservation(idReservation: Int, idChauffeur: Int): Reservation? {
+        val reservation = repo.findById(idReservation).get()
+        if (reservation.acceptee == true) {
+            return null
+        }
+        val reservationRetour = repo.findById(idReservation).get()
         repo.updateReservationAccept(idReservation, idChauffeur)
-        if (repo.findById(idReservation).isPresent)
-            return repo.findById(idReservation).get()
-        return null
+        return reservationRetour
     }
 
     override fun chercherUtilisateur(id: Int): Utilisateur? {
