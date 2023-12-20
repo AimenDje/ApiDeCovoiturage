@@ -1,25 +1,24 @@
 package com.projet.covoiturage.Controllers
 
+import com.fasterxml.jackson.databind.ObjectMapper
+import com.projet.covoiturage.Exception.*
+import com.projet.covoiturage.Model.Reservation
+import com.projet.covoiturage.Model.Utilisateur
 import com.projet.covoiturage.Service.ReservationService
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 import org.mockito.Mockito
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.mock.mockito.MockBean
-import org.springframework.test.web.servlet.MockMvc
 import org.springframework.http.MediaType
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers.*
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*
-import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.Assertions.assertTrue
-
-import com.projet.covoiturage.Model.Reservation
-import com.projet.covoiturage.Model.Utilisateur
-import com.fasterxml.jackson.databind.ObjectMapper
-import com.projet.covoiturage.Exception.*
 import org.springframework.security.test.context.support.WithMockUser
 import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf
+import org.springframework.test.web.servlet.MockMvc
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers.*
 
 
 @SpringBootTest
@@ -46,10 +45,10 @@ class ReservationControllerTestAuth {
         Mockito.`when`(service.chercherTous("joe")).thenReturn(liste)
 
         mockMvc.perform(get("/reservations").with(csrf()))
-                .andExpect(status().isOk)
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$[0].reservationId").value("1"))
-                .andExpect(jsonPath("$[1].reservationId").value("2"))
+            .andExpect(status().isOk)
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+            .andExpect(jsonPath("$[0].reservationId").value("1"))
+            .andExpect(jsonPath("$[1].reservationId").value("2"))
     }
 
     @WithMockUser
@@ -57,13 +56,15 @@ class ReservationControllerTestAuth {
     // @GetMapping("/reservations")
     // Exception
     fun `Étant donné un utilisateur authentifié et qu'il n'y a aucune réservation, lorsqu'on effectue une requête GET de recherche alors, on obtient un code de retour 404`() {
-        mockMvc.perform(get("/reservations").with(csrf())
-                .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isNotFound)
-                .andExpect { resultat ->
-                    assertTrue(resultat.resolvedException is ReservationsIntrouvablesExc)
-                    assertEquals("Aucune réservation trouvée.", resultat.resolvedException?.message)
-                }
+        mockMvc.perform(
+            get("/reservations").with(csrf())
+                .contentType(MediaType.APPLICATION_JSON)
+        )
+            .andExpect(status().isNotFound)
+            .andExpect { resultat ->
+                assertTrue(resultat.resolvedException is ReservationsIntrouvablesExc)
+                assertEquals("Aucune réservation trouvée.", resultat.resolvedException?.message)
+            }
     }
 
     @WithMockUser("joe")
@@ -75,9 +76,9 @@ class ReservationControllerTestAuth {
         Mockito.`when`(service.chercherParIdChauffeur(1, "joe")).thenReturn(reservation)
 
         mockMvc.perform(get("/reservation/1").with(csrf()))
-                .andExpect(status().isOk)
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.reservationId").value("1"))
+            .andExpect(status().isOk)
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+            .andExpect(jsonPath("$.reservationId").value("1"))
     }
 
     @WithMockUser
@@ -85,13 +86,15 @@ class ReservationControllerTestAuth {
     // @GetMapping("/reservation/{id}")
     // Exception
     fun `Étant donné un utilisateur authentifié et la réservation dont le code est 1 qui n'existe pas dans le service lorsqu'on effectue une requête GET de recherche par code alors, on obtient un code de retour 404`() {
-        mockMvc.perform(get("/reservation/1").with(csrf())
-                .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isNotFound)
-                .andExpect { resultat ->
-                    assertTrue(resultat.resolvedException is ReservationIntrouvableExc)
-                    assertEquals("La réservation avec l'id 1 est introuvable.", resultat.resolvedException?.message)
-                }
+        mockMvc.perform(
+            get("/reservation/1").with(csrf())
+                .contentType(MediaType.APPLICATION_JSON)
+        )
+            .andExpect(status().isNotFound)
+            .andExpect { resultat ->
+                assertTrue(resultat.resolvedException is ReservationIntrouvableExc)
+                assertEquals("La réservation avec l'id 1 est introuvable.", resultat.resolvedException?.message)
+            }
     }
 
     @WithMockUser(username = "joe")
@@ -103,13 +106,13 @@ class ReservationControllerTestAuth {
         val utilisateur = Utilisateur(1, "biden", "biden", "Biden", "biden@biden.com", "4380000000", null, false)
         Mockito.`when`(service.chercherParId(1)).thenReturn(reservation)
         Mockito.`when`(service.chercherUtilisateur(1)).thenReturn(utilisateur)
-        Mockito.`when`(service.accepterReservation(1, 1,"joe")).thenReturn(reservation)
+        Mockito.`when`(service.accepterReservation(1, 1, "joe")).thenReturn(reservation)
 
         mockMvc.perform(post("/chauffeur/1/reservation/1").with(csrf()))
-                .andExpect(status().isOk)
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.reservationId").value("1"))
-                .andExpect(jsonPath("$.acceptee").value(true))
+            .andExpect(status().isOk)
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+            .andExpect(jsonPath("$.reservationId").value("1"))
+            .andExpect(jsonPath("$.acceptee").value(true))
     }
 
     @WithMockUser(username = "justin")
@@ -119,13 +122,15 @@ class ReservationControllerTestAuth {
     fun `Étant donné un chauffeur authentifié dont le code est 1 et la réservation 2 qui n'existe pas dans le service lorsqu'on effectue une requête POST par code de réservation et code de chauffeur alors, on obtient un code de retour 404`() {
         Mockito.`when`(service.chercherParId(2)).thenReturn(null)
 
-        mockMvc.perform(post("/chauffeur/1/reservation/2").with(csrf())
-                .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isNotFound)
-                .andExpect { resultat ->
-                    assertTrue(resultat.resolvedException is ReservationIntrouvableExc)
-                    assertEquals("La réservation avec l'id 2 est introuvable.", resultat.resolvedException?.message)
-                }
+        mockMvc.perform(
+            post("/chauffeur/1/reservation/2").with(csrf())
+                .contentType(MediaType.APPLICATION_JSON)
+        )
+            .andExpect(status().isNotFound)
+            .andExpect { resultat ->
+                assertTrue(resultat.resolvedException is ReservationIntrouvableExc)
+                assertEquals("La réservation avec l'id 2 est introuvable.", resultat.resolvedException?.message)
+            }
     }
 
     @WithMockUser(username = "joe")
@@ -139,9 +144,9 @@ class ReservationControllerTestAuth {
         Mockito.`when`(service.chercherReservationChaufeur(1, "joe")).thenReturn(reservation)
 
         mockMvc.perform(get("/chauffeur/1/reservation").with(csrf()))
-                .andExpect(status().isOk)
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.reservationId").value("1"))
+            .andExpect(status().isOk)
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+            .andExpect(jsonPath("$.reservationId").value("1"))
     }
 
     @WithMockUser
@@ -151,8 +156,10 @@ class ReservationControllerTestAuth {
     fun `Étant donné un utilisateur authentifié et le chauffeur dont le code est 1 qui n'existe pas dans le service lorsqu'on effectue une requête GET de recherche par code alors, on obtient un code de retour 404`() {
         Mockito.`when`(service.chercherUtilisateur(1)).thenReturn(null)
 
-        mockMvc.perform(get("/chauffeur/1/reservation").with(csrf())
-            .contentType(MediaType.APPLICATION_JSON))
+        mockMvc.perform(
+            get("/chauffeur/1/reservation").with(csrf())
+                .contentType(MediaType.APPLICATION_JSON)
+        )
             .andExpect(status().isNotFound)
             .andExpect { resultat ->
                 assertTrue(resultat.resolvedException is UtilisateurIntrouvableExc)
@@ -169,13 +176,15 @@ class ReservationControllerTestAuth {
         Mockito.`when`(service.chercherUtilisateur(1)).thenReturn(utilisateur)
         Mockito.`when`(service.chercherReservationChaufeur(1, "joe")).thenReturn(null)
 
-        mockMvc.perform(get("/chauffeur/1/reservation").with(csrf())
-                .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isNotFound)
-                .andExpect { resultat ->
-                    assertTrue(resultat.resolvedException is ReservationIntrouvableExc)
-                    assertEquals("Aucune réservation acceptée par ce chauffeur.", resultat.resolvedException?.message)
-                }
+        mockMvc.perform(
+            get("/chauffeur/1/reservation").with(csrf())
+                .contentType(MediaType.APPLICATION_JSON)
+        )
+            .andExpect(status().isNotFound)
+            .andExpect { resultat ->
+                assertTrue(resultat.resolvedException is ReservationIntrouvableExc)
+                assertEquals("Aucune réservation acceptée par ce chauffeur.", resultat.resolvedException?.message)
+            }
     }
 
     @WithMockUser("justin")
@@ -188,13 +197,13 @@ class ReservationControllerTestAuth {
         val utilisateur = Utilisateur(1, "biden", "biden", "Biden", "biden@biden.com", "4380000000", null, false)
         val list: List<Reservation> = listOf(reservation, reservation2)
         Mockito.`when`(service.chercherUtilisateur(1)).thenReturn(utilisateur)
-        Mockito.`when`(service.chercherReservationsParUtilisateur(1,"justin")).thenReturn(list)
+        Mockito.`when`(service.chercherReservationsParUtilisateur(1, "justin")).thenReturn(list)
 
         mockMvc.perform(get("/utilisateur/1/reservations").with(csrf()))
-                .andExpect(status().isOk)
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$[0].reservationId").value("1"))
-                .andExpect(jsonPath("$[1].reservationId").value("2"))
+            .andExpect(status().isOk)
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+            .andExpect(jsonPath("$[0].reservationId").value("1"))
+            .andExpect(jsonPath("$[1].reservationId").value("2"))
     }
 
     @WithMockUser("justin")
@@ -206,13 +215,15 @@ class ReservationControllerTestAuth {
         Mockito.`when`(service.chercherUtilisateur(1)).thenReturn(null)
         Mockito.`when`(service.chercherReservationsParUtilisateur(1, "justin")).thenReturn(list)
 
-        mockMvc.perform(get("/utilisateur/1/reservations").with(csrf())
-                .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isNotFound)
-                .andExpect { resultat ->
-                    assertTrue(resultat.resolvedException is UtilisateurIntrouvableExc)
-                    assertEquals("L'utilisateur avec l'id 1 est introuvable.", resultat.resolvedException?.message)
-                }
+        mockMvc.perform(
+            get("/utilisateur/1/reservations").with(csrf())
+                .contentType(MediaType.APPLICATION_JSON)
+        )
+            .andExpect(status().isNotFound)
+            .andExpect { resultat ->
+                assertTrue(resultat.resolvedException is UtilisateurIntrouvableExc)
+                assertEquals("L'utilisateur avec l'id 1 est introuvable.", resultat.resolvedException?.message)
+            }
     }
 
     @WithMockUser("justin")
@@ -225,12 +236,17 @@ class ReservationControllerTestAuth {
         Mockito.`when`(service.chercherUtilisateur(1)).thenReturn(utilisateur)
         Mockito.`when`(service.chercherReservationsParUtilisateur(1, "justin")).thenReturn(list)
 
-        mockMvc.perform(get("/utilisateur/1/reservations").with(csrf())
-            .contentType(MediaType.APPLICATION_JSON))
+        mockMvc.perform(
+            get("/utilisateur/1/reservations").with(csrf())
+                .contentType(MediaType.APPLICATION_JSON)
+        )
             .andExpect(status().isNotFound)
             .andExpect { resultat ->
                 assertTrue(resultat.resolvedException is ReservationsIntrouvablesExc)
-                assertEquals("L'utilisateur avec l'id 1 n'a effectué aucune réservation pour le moment.", resultat.resolvedException?.message)
+                assertEquals(
+                    "L'utilisateur avec l'id 1 n'a effectué aucune réservation pour le moment.",
+                    resultat.resolvedException?.message
+                )
             }
     }
 
@@ -245,9 +261,9 @@ class ReservationControllerTestAuth {
         Mockito.`when`(service.chercherReservationParUtilisateur(1, 1, "justin")).thenReturn(reservation)
 
         mockMvc.perform(get("/utilisateur/1/reservation/1").with(csrf()))
-                .andExpect(status().isOk)
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.reservationId").value("1"))
+            .andExpect(status().isOk)
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+            .andExpect(jsonPath("$.reservationId").value("1"))
     }
 
     @WithMockUser
@@ -257,8 +273,10 @@ class ReservationControllerTestAuth {
     fun `Étant donné un utilisateur authentifié et le passager dont le code est 1 qui n'existe pas dans le service lorsqu'on effectue une requête GET de recherche par code utilisateur et pas code de réservation alors, on obtient un code de retour 404`() {
         Mockito.`when`(service.chercherUtilisateur(1)).thenReturn(null)
 
-        mockMvc.perform(get("/utilisateur/1/reservation/1").with(csrf())
-            .contentType(MediaType.APPLICATION_JSON))
+        mockMvc.perform(
+            get("/utilisateur/1/reservation/1").with(csrf())
+                .contentType(MediaType.APPLICATION_JSON)
+        )
             .andExpect(status().isNotFound)
             .andExpect { resultat ->
                 assertTrue(resultat.resolvedException is UtilisateurIntrouvableExc)
@@ -275,13 +293,18 @@ class ReservationControllerTestAuth {
         Mockito.`when`(service.chercherUtilisateur(1)).thenReturn(utilisateur)
         Mockito.`when`(service.chercherReservationParUtilisateur(1, 1, "justin")).thenReturn(null)
 
-        mockMvc.perform(get("/utilisateur/1/reservation/1").with(csrf())
-                .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isNotFound)
-                .andExpect { resultat ->
-                    assertTrue(resultat.resolvedException is ReservationIntrouvableExc)
-                    assertEquals("La réservation avec l'id 1 est introuvable pour l'utilisateur 1", resultat.resolvedException?.message)
-                }
+        mockMvc.perform(
+            get("/utilisateur/1/reservation/1").with(csrf())
+                .contentType(MediaType.APPLICATION_JSON)
+        )
+            .andExpect(status().isNotFound)
+            .andExpect { resultat ->
+                assertTrue(resultat.resolvedException is ReservationIntrouvableExc)
+                assertEquals(
+                    "La réservation avec l'id 1 est introuvable pour l'utilisateur 1",
+                    resultat.resolvedException?.message
+                )
+            }
     }
 
     @WithMockUser("justin")
@@ -292,11 +315,13 @@ class ReservationControllerTestAuth {
         val reservation = Reservation(1, null, 66, null, null, false)
         Mockito.`when`(service.ajouter(reservation, "justin")).thenReturn(reservation)
 
-        mockMvc.perform(post("/reservation").with(csrf())
+        mockMvc.perform(
+            post("/reservation").with(csrf())
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(mapper.writeValueAsString(reservation)))
-                .andExpect(status().isCreated)
-                .andExpect(jsonPath("$.reservationId").value("1"))
+                .content(mapper.writeValueAsString(reservation))
+        )
+            .andExpect(status().isCreated)
+            .andExpect(jsonPath("$.reservationId").value("1"))
     }
 
     @WithMockUser
@@ -306,15 +331,19 @@ class ReservationControllerTestAuth {
     fun `Étant donné un utilisateur authentifié et la réservation dont le code est 1 qui possède plusieurs champs manquants et qui n'est pas inscrit au service lorsqu'on effectue une requête POST pour l'ajouter, on obtient un code de retour 400`() {
         val reservationStr = "{\"reservationId\": \"1\" }"
 
-        mockMvc.perform(post("/reservation").with(csrf())
+        mockMvc.perform(
+            post("/reservation").with(csrf())
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(reservationStr))
-                .andExpect(status().isBadRequest)
-                .andExpect { resultat ->
-                    assertTrue(resultat.resolvedException is MauvaiseFormulationObjetExc)
-                    assertEquals("La réservation que vous essayez d'ajouter n'est pas formulée " +
-                            "correctement.", resultat.resolvedException?.message)
-                }
+                .content(reservationStr)
+        )
+            .andExpect(status().isBadRequest)
+            .andExpect { resultat ->
+                assertTrue(resultat.resolvedException is MauvaiseFormulationObjetExc)
+                assertEquals(
+                    "La réservation que vous essayez d'ajouter n'est pas formulée " +
+                            "correctement.", resultat.resolvedException?.message
+                )
+            }
     }
 
     @WithMockUser("justin")
@@ -327,11 +356,13 @@ class ReservationControllerTestAuth {
         Mockito.`when`(service.chercherParId(1)).thenReturn(reservation)
         Mockito.`when`(service.ajouter(reservation2, "justin")).thenReturn(reservation2)
 
-        mockMvc.perform(put("/reservation/1").with(csrf())
+        mockMvc.perform(
+            put("/reservation/1").with(csrf())
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(mapper.writeValueAsString(reservation2)))
-                .andExpect(status().isOk)
-                .andExpect(jsonPath("$.nombrePassager").value("99"))
+                .content(mapper.writeValueAsString(reservation2))
+        )
+            .andExpect(status().isOk)
+            .andExpect(jsonPath("$.nombrePassager").value("99"))
     }
 
     @WithMockUser
@@ -342,15 +373,19 @@ class ReservationControllerTestAuth {
         val reservationStr = "{\"reservationId\": \"1\", \"nombrePassager\": \"66\"}"
         Mockito.`when`(service.chercherParId(1)).thenReturn(null)
 
-        mockMvc.perform(put("/reservation/1").with(csrf())
+        mockMvc.perform(
+            put("/reservation/1").with(csrf())
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(reservationStr))
-                .andExpect(status().isBadRequest)
-                .andExpect { resultat ->
-                    assertTrue(resultat.resolvedException is MauvaiseRequeteExc)
-                    assertEquals("La réservation avec l'id 1 n'existe pas. Utilisez une requête POST pour en " +
-                            "ajouter une nouvelle.", resultat.resolvedException?.message)
-                }
+                .content(reservationStr)
+        )
+            .andExpect(status().isBadRequest)
+            .andExpect { resultat ->
+                assertTrue(resultat.resolvedException is MauvaiseRequeteExc)
+                assertEquals(
+                    "La réservation avec l'id 1 n'existe pas. Utilisez une requête POST pour en " +
+                            "ajouter une nouvelle.", resultat.resolvedException?.message
+                )
+            }
     }
 
     @WithMockUser("justin")
@@ -360,9 +395,11 @@ class ReservationControllerTestAuth {
     fun `Étant donné un utilisateur authentifié et la réservation dont le code est 1 qui est inscrite au service lorsqu'on effectue une requête DELETE pour supprimer la réservation alors, on obtient code de retour 200`() {
         Mockito.`when`(service.supprimer(1, "justin")).thenReturn(true)
 
-        mockMvc.perform(delete("/reservation/1").with(csrf())
-                .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isNoContent)
+        mockMvc.perform(
+            delete("/reservation/1").with(csrf())
+                .contentType(MediaType.APPLICATION_JSON)
+        )
+            .andExpect(status().isNoContent)
     }
 
     @WithMockUser("justin")
@@ -372,14 +409,18 @@ class ReservationControllerTestAuth {
     fun `Étant donné un utilisateur authentifié et la réservation dont le code est 1 n'est pas inscrite au service lorsqu'on effectue une requête DELETE pour supprimer la réservation alors, on obtient un code de retour 404`() {
         Mockito.`when`(service.supprimer(1, "justin")).thenReturn(false)
 
-        mockMvc.perform(delete("/reservation/1")
-                .contentType(MediaType.APPLICATION_JSON).with(csrf()))
-                .andExpect(status().isNotFound)
-                .andExpect { resultat ->
-                    assertTrue(resultat.resolvedException is ReservationIntrouvableExc)
-                    assertEquals("La réservation l'id 1 n'a pas pu être supprimée parce qu'elle " +
-                            "n'existe pas.", resultat.resolvedException?.message)
-                }
+        mockMvc.perform(
+            delete("/reservation/1")
+                .contentType(MediaType.APPLICATION_JSON).with(csrf())
+        )
+            .andExpect(status().isNotFound)
+            .andExpect { resultat ->
+                assertTrue(resultat.resolvedException is ReservationIntrouvableExc)
+                assertEquals(
+                    "La réservation l'id 1 n'a pas pu être supprimée parce qu'elle " +
+                            "n'existe pas.", resultat.resolvedException?.message
+                )
+            }
     }
 
 }

@@ -22,7 +22,6 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.*
 
 
-
 @SpringBootTest
 @AutoConfigureMockMvc
 class TrajetControllerUtilisateurAuthentifiéTest {
@@ -34,7 +33,6 @@ class TrajetControllerUtilisateurAuthentifiéTest {
 
     @Autowired
     private lateinit var mockMvc: MockMvc
-
 
 
     @WithMockUser(username = "mahrez")
@@ -49,7 +47,7 @@ class TrajetControllerUtilisateurAuthentifiéTest {
         Mockito.`when`(service.chercherUtilisateur(123)).thenReturn(utilisateur)
         Mockito.`when`(service.chercherTrajetsParUtilisateur(123, "mahrez")).thenReturn(list)
 
-        mockMvc.perform(get("/utilisateur/123/trajets").with(SecurityMockMvcRequestPostProcessors.csrf()))
+        mockMvc.perform(get("/utilisateur/123/trajets").with(csrf()))
             .andExpect(status().isOk)
             .andExpect(content().contentType(MediaType.APPLICATION_JSON))
             .andExpect(jsonPath("$[0].trajetId").value("1"))
@@ -65,8 +63,10 @@ class TrajetControllerUtilisateurAuthentifiéTest {
         Mockito.`when`(service.chercherUtilisateur(1)).thenReturn(null)
         Mockito.`when`(service.chercherTrajetsParUtilisateur(1, "mahrez")).thenReturn(list)
 
-        mockMvc.perform(get("/utilisateur/1/trajets").with(SecurityMockMvcRequestPostProcessors.csrf())
-            .contentType(MediaType.APPLICATION_JSON))
+        mockMvc.perform(
+            get("/utilisateur/1/trajets").with(csrf())
+                .contentType(MediaType.APPLICATION_JSON)
+        )
             .andExpect(status().isNotFound)
             .andExpect { resultat ->
                 Assertions.assertTrue(resultat.resolvedException is UtilisateurIntrouvableExc)
@@ -88,8 +88,10 @@ class TrajetControllerUtilisateurAuthentifiéTest {
         Mockito.`when`(service.chercherUtilisateur(1)).thenReturn(utilisateur)
         Mockito.`when`(service.chercherTrajetsParUtilisateur(1, "mahrez")).thenReturn(list)
 
-        mockMvc.perform(get("/utilisateur/1/trajets").with(SecurityMockMvcRequestPostProcessors.csrf())
-            .contentType(MediaType.APPLICATION_JSON))
+        mockMvc.perform(
+            get("/utilisateur/1/trajets").with(csrf())
+                .contentType(MediaType.APPLICATION_JSON)
+        )
             .andExpect(status().isNotFound)
             .andExpect { resultat ->
                 Assertions.assertTrue(resultat.resolvedException is TrajetsIntrouvablesExc)
@@ -111,7 +113,7 @@ class TrajetControllerUtilisateurAuthentifiéTest {
         Mockito.`when`(service.chercherUtilisateur(1)).thenReturn(utilisateur)
         Mockito.`when`(service.chercherTrajetParUtilisateur(1, 1, "mahrez")).thenReturn(trajet)
 
-        mockMvc.perform(get("/utilisateur/1/trajet/1").with(SecurityMockMvcRequestPostProcessors.csrf()))
+        mockMvc.perform(get("/utilisateur/1/trajet/1").with(csrf()))
             .andExpect(status().isOk)
             .andExpect(content().contentType(MediaType.APPLICATION_JSON))
             .andExpect(jsonPath("$.trajetId").value("1"))
@@ -124,8 +126,10 @@ class TrajetControllerUtilisateurAuthentifiéTest {
     fun `Étant donné l'utilisateur dont le code est 1 et le trajet dont le code 1 et qui n'est pas inscrit au service lorsqu'on effectue une requête GET de recherche d'un trajet par code utilisateur alors on obtient le message d'erreur « L'utilisateur avec l'id 1 est introuvable » et un code de retour 404`() {
 
         Mockito.`when`(service.chercherUtilisateur(1)).thenReturn(null)
-        mockMvc.perform(get("/utilisateur/1/trajet/1").with(SecurityMockMvcRequestPostProcessors.csrf())
-            .contentType(MediaType.APPLICATION_JSON))
+        mockMvc.perform(
+            get("/utilisateur/1/trajet/1").with(csrf())
+                .contentType(MediaType.APPLICATION_JSON)
+        )
             .andExpect(status().isNotFound)
             .andExpect { resultat ->
                 Assertions.assertTrue(resultat.resolvedException is UtilisateurIntrouvableExc)
@@ -145,8 +149,10 @@ class TrajetControllerUtilisateurAuthentifiéTest {
         Mockito.`when`(service.chercherUtilisateur(1)).thenReturn(utilisateur)
         Mockito.`when`(service.chercherTrajetParUtilisateur(1, 1, "mahrez")).thenReturn(null)
 
-        mockMvc.perform(get("/utilisateur/1/trajet/1").with(csrf())
-            .contentType(MediaType.APPLICATION_JSON))
+        mockMvc.perform(
+            get("/utilisateur/1/trajet/1").with(csrf())
+                .contentType(MediaType.APPLICATION_JSON)
+        )
             .andExpect(status().isNotFound)
             .andExpect { resultat ->
                 Assertions.assertTrue(resultat.resolvedException is TrajetIntrouvableExc)
@@ -158,7 +164,6 @@ class TrajetControllerUtilisateurAuthentifiéTest {
     }
 
 
-
     @WithMockUser("mahrez")
     @Test
     // @PostMapping("/trajet")
@@ -167,9 +172,11 @@ class TrajetControllerUtilisateurAuthentifiéTest {
         val trajet = Trajet(1, "Montréal-Toronto", null, null, null)
         Mockito.`when`(service.ajouter(trajet, "mahrez")).thenReturn(trajet)
 
-        mockMvc.perform(post("/trajet").with(csrf())
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(mapper.writeValueAsString(trajet)))
+        mockMvc.perform(
+            post("/trajet").with(csrf())
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(mapper.writeValueAsString(trajet))
+        )
             .andExpect(status().isCreated)
             .andExpect(jsonPath("$.trajetId").value("1"))
     }
@@ -181,14 +188,17 @@ class TrajetControllerUtilisateurAuthentifiéTest {
 
         val trajetStr = "{\"trajetId\": \"1\" }"
 
-        mockMvc.perform(post("/trajet").with(csrf())
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(trajetStr))
+        mockMvc.perform(
+            post("/trajet").with(csrf())
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(trajetStr)
+        )
             .andExpect(status().isBadRequest)
             .andExpect { resultat ->
                 Assertions.assertTrue(resultat.resolvedException is MauvaiseFormulationObjetExc)
                 Assertions.assertEquals(
-                    "La trajet que vous essayez d'ajouter est incorrectement formulé ou est manquant", resultat.resolvedException?.message
+                    "La trajet que vous essayez d'ajouter est incorrectement formulé ou est manquant",
+                    resultat.resolvedException?.message
                 )
             }
     }
@@ -200,15 +210,17 @@ class TrajetControllerUtilisateurAuthentifiéTest {
     fun `Étant donné un utilisateur authentifié et le trajet dont l'id est 1 et qui est déjà inscrit au service lorsqu'on effectue une requête PUT pour modifier le nom du trajet on obtient un JSON qui contient un trajet dont le nom est travail, un code de retour 200`() {
 
         val utilisateur = Utilisateur(1, "biden", "Djemaoune", "Aimen", "biden@biden.com", "4380000000", null, false)
-        val adresse = Adresse (21, "ddgahdg", "sdsd", "ddad", "gjhgk", "gkjg", "hkl")
+        val adresse = Adresse(21, "ddgahdg", "sdsd", "ddad", "gjhgk", "gkjg", "hkl")
         var trajet = Trajet(2, "école", adresse, adresse, utilisateur)
         var trajet2 = Trajet(2, "maison", adresse, adresse, utilisateur)
         Mockito.`when`(service.chercherParId(2)).thenReturn(trajet)
         Mockito.`when`(service.ajouter(trajet2, "mahrez")).thenReturn(trajet2)
 
-        mockMvc.perform(put("/trajet/2").with(csrf())
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(mapper.writeValueAsString(trajet2)))
+        mockMvc.perform(
+            put("/trajet/2").with(csrf())
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(mapper.writeValueAsString(trajet2))
+        )
             .andExpect(status().isOk)
             .andExpect(jsonPath("$.nom").value("maison"))
     }
@@ -247,10 +259,12 @@ class TrajetControllerUtilisateurAuthentifiéTest {
         val trajet = Trajet(123, "école", null, null, utilisateur)
         Mockito.`when`(service.supprimer(123, "mahrez")).thenReturn(true)
 
-        mockMvc.perform(delete("/trajet/123").with(csrf())
-            .contentType(MediaType.APPLICATION_JSON))
+        mockMvc.perform(
+            delete("/trajet/123").with(csrf())
+                .contentType(MediaType.APPLICATION_JSON)
+        )
             .andExpect(status().isNoContent)
-        }
+    }
 
 
     @WithMockUser("mahrez")
@@ -262,16 +276,19 @@ class TrajetControllerUtilisateurAuthentifiéTest {
         val trajet = Trajet(8000, null, null, null, null)
         Mockito.`when`(service.supprimer(8000, "mahrez")).thenReturn(false)
 
-        mockMvc.perform(delete("/trajet/8000").with(csrf())
-            .contentType(MediaType.APPLICATION_JSON))
+        mockMvc.perform(
+            delete("/trajet/8000").with(csrf())
+                .contentType(MediaType.APPLICATION_JSON)
+        )
             .andExpect(status().isNotFound)
             .andExpect { resultat ->
                 Assertions.assertTrue(resultat.resolvedException is TrajetIntrouvableExc)
-                Assertions.assertEquals("Le trajet avec l'id 8000 n'a pas pu être supprimé parce qu'il n'existe pas.",
-                        resultat.resolvedException?.message)
+                Assertions.assertEquals(
+                    "Le trajet avec l'id 8000 n'a pas pu être supprimé parce qu'il n'existe pas.",
+                    resultat.resolvedException?.message
+                )
             }
-        }
-
-
-
     }
+
+
+}

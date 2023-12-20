@@ -1,25 +1,18 @@
 package com.projet.covoiturage.Controllers
 
+import com.fasterxml.jackson.databind.ObjectMapper
+import com.projet.covoiturage.Model.Reservation
 import com.projet.covoiturage.Service.ReservationService
 import org.junit.jupiter.api.Test
-import org.mockito.Mockito
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.mock.mockito.MockBean
-import org.springframework.test.web.servlet.MockMvc
 import org.springframework.http.MediaType
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers.*
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*
-import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.Assertions.assertTrue
-
-import com.projet.covoiturage.Model.Reservation
-import com.projet.covoiturage.Model.Utilisateur
-import com.fasterxml.jackson.databind.ObjectMapper
-import com.projet.covoiturage.Exception.*
-import org.springframework.security.test.context.support.WithMockUser
 import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf
+import org.springframework.test.web.servlet.MockMvc
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 
 
 @SpringBootTest
@@ -28,9 +21,6 @@ class ReservationControllerTestNonAuth {
 
     @Autowired
     private lateinit var mapper: ObjectMapper
-
-    @MockBean
-    lateinit var service: ReservationService
 
     @Autowired
     private lateinit var mockMvc: MockMvc
@@ -82,9 +72,11 @@ class ReservationControllerTestNonAuth {
     fun `Étant donné un visiteur non-authentifié et la réservation dont le code est 1 et qui n'est pas inscrit au service lorsqu'on effectue une requête POST pour l'ajouter alors, on obtient un code de retour 401`() {
         val reservation = Reservation(1, null, 66, null, null, false)
 
-        mockMvc.perform(post("/reservation").with(csrf())
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(mapper.writeValueAsString(reservation)))
+        mockMvc.perform(
+            post("/reservation").with(csrf())
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(mapper.writeValueAsString(reservation))
+        )
             .andExpect(status().isUnauthorized)
     }
 
@@ -94,17 +86,21 @@ class ReservationControllerTestNonAuth {
         val reservation = Reservation(1, null, 66, null, null, false)
         val reservation2 = Reservation(1, null, 99, null, null, false)
 
-        mockMvc.perform(put("/reservation/1").with(csrf())
+        mockMvc.perform(
+            put("/reservation/1").with(csrf())
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(mapper.writeValueAsString(reservation2)))
-                .andExpect(status().isUnauthorized)
+                .content(mapper.writeValueAsString(reservation2))
+        )
+            .andExpect(status().isUnauthorized)
     }
 
     @Test
     // @DeleteMapping("/reservation/{id}")
     fun `Étant donné un visiteur non-authentifié et la réservation dont le code est 1 qui est inscrite au service, lorsqu'on effectue une requête DELETE pour supprimer la réservation alors, on obtient un code de retour 401`() {
-        mockMvc.perform(delete("/reservation/1").with(csrf())
-                .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isUnauthorized)
+        mockMvc.perform(
+            delete("/reservation/1").with(csrf())
+                .contentType(MediaType.APPLICATION_JSON)
+        )
+            .andExpect(status().isUnauthorized)
     }
 }

@@ -4,8 +4,8 @@ import com.projet.covoiturage.Exception.*
 import com.projet.covoiturage.Model.Reservation
 import com.projet.covoiturage.Service.ReservationService
 import io.swagger.v3.oas.annotations.Operation
-import io.swagger.v3.oas.annotations.tags.Tag
 import io.swagger.v3.oas.annotations.responses.ApiResponse
+import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
@@ -28,7 +28,8 @@ class ReservationController(val service: ReservationService) {
             ApiResponse(responseCode = "200", description = "Des réservations ont été trouvées."),
             ApiResponse(responseCode = "404", description = "Aucune réservation trouvée dans le service."),
             ApiResponse(responseCode = "403", description = "Réservé aux chauffeurs.")
-        ])
+        ]
+    )
     @GetMapping("/reservations")
     fun getReservations(principal: Principal): List<Reservation> {
         if (service.chercherTous(principal.name).isEmpty())
@@ -58,7 +59,10 @@ class ReservationController(val service: ReservationService) {
         description = "Accepte une réservation pour un chauffeur spécifique et retourne la réservation acceptée.",
         operationId = "accepteReservation",
         responses = [
-            ApiResponse(responseCode = "200", description = "La réservation a été acceptée pour le chauffeur spécifié."),
+            ApiResponse(
+                responseCode = "200",
+                description = "La réservation a été acceptée pour le chauffeur spécifié."
+            ),
             ApiResponse(responseCode = "404", description = "La réservation n'existe pas dans le service."),
             ApiResponse(responseCode = "404", description = "Le chauffeur n'existe pas dans le service."),
             ApiResponse(responseCode = "401", description = "La fonctionnalité est réservée aux chauffeurs."),
@@ -66,8 +70,11 @@ class ReservationController(val service: ReservationService) {
         ]
     )
     @PostMapping("/chauffeur/{idChauffeur}/reservation/{idReservation}")
-    fun accepteReservation(@PathVariable idReservation: Int, @PathVariable idChauffeur: Int, principal: Principal): Reservation?
-    {
+    fun accepteReservation(
+        @PathVariable idReservation: Int,
+        @PathVariable idChauffeur: Int,
+        principal: Principal
+    ): Reservation? {
         if (service.chercherParId(idReservation) == null)
             throw ReservationIntrouvableExc("La réservation avec l'id $idReservation est introuvable.")
         if (service.chercherUtilisateur(idChauffeur) == null)
@@ -82,10 +89,13 @@ class ReservationController(val service: ReservationService) {
         responses = [
             ApiResponse(responseCode = "200", description = "La réservation acceptée par le chauffeur a été trouvée."),
             ApiResponse(responseCode = "404", description = "Le chauffeur n'existe pas dans le service."),
-            ApiResponse(responseCode = "404", description = "Aucune réservation acceptée par ce chauffeur dans le service."),
+            ApiResponse(
+                responseCode = "404",
+                description = "Aucune réservation acceptée par ce chauffeur dans le service."
+            ),
             ApiResponse(responseCode = "403", description = "Réservé aux chauffeurs.")
         ]
-        )
+    )
     @GetMapping("/chauffeur/{idChauffeur}/reservation")
     fun getReservationChauffeur(@PathVariable idChauffeur: Int, principal: Principal): Reservation? {
         if (service.chercherUtilisateur(idChauffeur) == null)
@@ -104,7 +114,10 @@ class ReservationController(val service: ReservationService) {
         responses = [
             ApiResponse(responseCode = "200", description = "Les réservations du passager ont étés trouvées."),
             ApiResponse(responseCode = "404", description = "Le passager n'existe pas dans le service."),
-            ApiResponse(responseCode = "404", description = "Aucune réservation trouvée dans le service pour ce passager."),
+            ApiResponse(
+                responseCode = "404",
+                description = "Aucune réservation trouvée dans le service pour ce passager."
+            ),
             ApiResponse(responseCode = "403", description = "Réservé aux passagers.")
         ]
     )
@@ -129,12 +142,17 @@ class ReservationController(val service: ReservationService) {
         ]
     )
     @GetMapping("/utilisateur/{idUtilisateur}/reservation/{idReservation}")
-    fun getReservationParUtilisateur(@PathVariable idReservation: Int, @PathVariable idUtilisateur: Int, principal: Principal): Reservation? {
+    fun getReservationParUtilisateur(
+        @PathVariable idReservation: Int,
+        @PathVariable idUtilisateur: Int,
+        principal: Principal
+    ): Reservation? {
         if (service.chercherUtilisateur(idUtilisateur) == null)
             throw UtilisateurIntrouvableExc("L'utilisateur avec l'id $idUtilisateur est introuvable.")
         else if (service.chercherReservationParUtilisateur(idReservation, idUtilisateur, principal.name) == null)
             throw ReservationIntrouvableExc(
-                "La réservation avec l'id $idReservation est introuvable pour l'utilisateur $idUtilisateur")
+                "La réservation avec l'id $idReservation est introuvable pour l'utilisateur $idUtilisateur"
+            )
         return service.chercherReservationParUtilisateur(idReservation, idUtilisateur, principal.name)
     }
 
@@ -152,8 +170,10 @@ class ReservationController(val service: ReservationService) {
     fun addReservation(@RequestBody reservation: Reservation, principal: Principal): ResponseEntity<Reservation> {
         val resultat = service.ajouter(reservation, principal.name)
         if (resultat == null)
-            throw MauvaiseFormulationObjetExc("La réservation que vous essayez d'ajouter n'est pas formulée " +
-                    "correctement.")
+            throw MauvaiseFormulationObjetExc(
+                "La réservation que vous essayez d'ajouter n'est pas formulée " +
+                        "correctement."
+            )
         else
             return ResponseEntity.status(HttpStatus.CREATED).body(resultat)
     }
@@ -169,10 +189,16 @@ class ReservationController(val service: ReservationService) {
         ]
     )
     @PutMapping("/reservation/{id}")
-    fun modifyReservation(@PathVariable id: Int, @RequestBody reservation: Reservation, principal: Principal): Reservation? {
+    fun modifyReservation(
+        @PathVariable id: Int,
+        @RequestBody reservation: Reservation,
+        principal: Principal
+    ): Reservation? {
         if (service.chercherParId(id) == null)
-            throw MauvaiseRequeteExc("La réservation avec l'id " + reservation.reservationId +
-                    " n'existe pas. Utilisez une requête POST pour en ajouter une nouvelle.")
+            throw MauvaiseRequeteExc(
+                "La réservation avec l'id " + reservation.reservationId +
+                        " n'existe pas. Utilisez une requête POST pour en ajouter une nouvelle."
+            )
         return service.ajouter(reservation, principal.name)
     }
 
@@ -189,8 +215,10 @@ class ReservationController(val service: ReservationService) {
     @DeleteMapping("/reservation/{id}")
     fun deleteReservation(@PathVariable id: Int, principal: Principal): ResponseEntity<String> {
         if (!service.supprimer(id, principal.name))
-            throw ReservationIntrouvableExc("La réservation l'id $id n'a pas pu être supprimée parce qu'elle " +
-                    "n'existe pas.")
+            throw ReservationIntrouvableExc(
+                "La réservation l'id $id n'a pas pu être supprimée parce qu'elle " +
+                        "n'existe pas."
+            )
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build()
     }
 }

@@ -23,19 +23,16 @@ class TrajetControllerUtilisateurNonAuthentifiéTests {
     @Autowired
     private lateinit var mapper: ObjectMapper
 
-    @MockBean
-    lateinit var service: TrajetService
-
     @Autowired
     private lateinit var mockMvc: MockMvc
-
 
 
     @Test
     // @GetMapping("/utilisateur/{idUtilisateur}/trajets")
     fun `Étant donné un utilisateur non-authentifié et le passager dont le code est 1 lorsqu'on effectue une requête GET de recherche de trajets par code utilisateur alors, on obtient un code de retour 401`() {
         mockMvc.perform(
-            MockMvcRequestBuilders.get("/utilisateur/1/trajet").with(SecurityMockMvcRequestPostProcessors.csrf()))
+            MockMvcRequestBuilders.get("/utilisateur/1/trajet").with(SecurityMockMvcRequestPostProcessors.csrf())
+        )
             .andExpect(MockMvcResultMatchers.status().isUnauthorized)
     }
 
@@ -44,12 +41,10 @@ class TrajetControllerUtilisateurNonAuthentifiéTests {
     // @GetMapping("/utilisateur/{idUtilisateur}/reservation/{idTrajet}")
     fun `Étant donné un utilisateur non-authentifié et le passager dont le code est 1 et le trajet dont le code 1 lorsqu'on effectue une requête GET de recherche d'un trajet par code utilisateur alors, on obtient un code de retour 401`() {
         mockMvc.perform(
-            MockMvcRequestBuilders.get("/utilisateur/1/trajet/1").with(SecurityMockMvcRequestPostProcessors.csrf()))
+            MockMvcRequestBuilders.get("/utilisateur/1/trajet/1").with(SecurityMockMvcRequestPostProcessors.csrf())
+        )
             .andExpect(MockMvcResultMatchers.status().isUnauthorized)
     }
-
-
-
 
 
     @Test
@@ -60,8 +55,9 @@ class TrajetControllerUtilisateurNonAuthentifiéTests {
 
         mockMvc.perform(
             MockMvcRequestBuilders.post("/trajet").with(SecurityMockMvcRequestPostProcessors.csrf())
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(mapper.writeValueAsString(trajet)))
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(mapper.writeValueAsString(trajet))
+        )
             .andExpect(MockMvcResultMatchers.status().isUnauthorized)
     }
 
@@ -70,14 +66,15 @@ class TrajetControllerUtilisateurNonAuthentifiéTests {
     // @PutMapping("/reservation/{id}")
     fun `Étant donné un utilisateur non-authentifié et le trajet dont le code est 2 où le nom est école qui est déjà inscrit au service lorsqu'on effectue une requête PUT pour modifier le nom alors, on obtient un code de retour 401`() {
         val utilisateur = Utilisateur(1, "biden", "Djemaoune", "Aimen", "biden@biden.com", "4380000000", null, false)
-        val adresse = Adresse (21, "ddgahdg", "sdsd", "ddad", "gjhgk", "gkjg", "hkl")
+        val adresse = Adresse(21, "ddgahdg", "sdsd", "ddad", "gjhgk", "gkjg", "hkl")
         var trajet = Trajet(2, "école", adresse, adresse, utilisateur)
         var trajet2 = Trajet(2, "maison", adresse, adresse, utilisateur)
 
         mockMvc.perform(
             MockMvcRequestBuilders.put("/trajet/2").with(SecurityMockMvcRequestPostProcessors.csrf())
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(mapper.writeValueAsString(trajet2)))
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(mapper.writeValueAsString(trajet2))
+        )
             .andExpect(MockMvcResultMatchers.status().isUnauthorized)
     }
 
@@ -87,7 +84,8 @@ class TrajetControllerUtilisateurNonAuthentifiéTests {
     fun `Étant donné un utilisateur non-authentifié et le trajet dont le code est 1 qui est inscrite au service, lorsqu'on effectue une requête DELETE pour supprimer le trajet alors, on obtient un code de retour 401`() {
         mockMvc.perform(
             MockMvcRequestBuilders.delete("/trajet/1").with(SecurityMockMvcRequestPostProcessors.csrf())
-            .contentType(MediaType.APPLICATION_JSON))
+                .contentType(MediaType.APPLICATION_JSON)
+        )
             .andExpect(MockMvcResultMatchers.status().isUnauthorized)
     }
 

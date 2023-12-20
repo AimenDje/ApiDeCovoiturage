@@ -11,15 +11,20 @@ import org.springframework.transaction.annotation.Transactional
 @Repository
 interface ReservationRepo : JpaRepository<Reservation, Int> {
     //@Query("SELECT * FROM Reservation WHERE :#{#customer.firstname} ")
-    @Query("select r from Reservation r where r.trajet.trajetId = any " +
-            "(select t.trajetId from Trajet t where t.utilisateur.utilisateurId = :utilisateur_id)")
+    @Query(
+        "select r from Reservation r where r.trajet.trajetId = any " +
+                "(select t.trajetId from Trajet t where t.utilisateur.utilisateurId = :utilisateur_id)"
+    )
     fun findAllReservationByUser(@Param("utilisateur_id") id: Int): List<Reservation?>?
 
-    @Query("select r from Reservation r where r.reservationId = :reservation_id and r.trajet.trajetId = any " +
-            "(select t.trajetId from Trajet t where t.utilisateur.utilisateurId = :utilisateur_id)")
+    @Query(
+        "select r from Reservation r where r.reservationId = :reservation_id and r.trajet.trajetId = any " +
+                "(select t.trajetId from Trajet t where t.utilisateur.utilisateurId = :utilisateur_id)"
+    )
     fun findReservationByUserAndReservation(
-            @Param("reservation_id") idReservation: Int,
-            @Param("utilisateur_id") idUtilisateur: Int): Reservation?
+        @Param("reservation_id") idReservation: Int,
+        @Param("utilisateur_id") idUtilisateur: Int
+    ): Reservation?
 
     fun findReservationsByAccepteeIsFalse(): List<Reservation>
 
@@ -30,5 +35,6 @@ interface ReservationRepo : JpaRepository<Reservation, Int> {
     @Query("update Reservation r set r.chauffeur.utilisateurId = :utilisateur_id, r.acceptee = true where r.reservationId = :reservation_id")
     fun updateReservationAccept(
         @Param("reservation_id") idReservation: Int,
-        @Param("utilisateur_id") idChauffeur: Int)
+        @Param("utilisateur_id") idChauffeur: Int
+    )
 }

@@ -1,6 +1,5 @@
 package com.projet.covoiturage.Repository
 
-import com.projet.covoiturage.Model.Reservation
 import com.projet.covoiturage.Model.Trajet
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Query
@@ -18,5 +17,6 @@ interface TrajetRepo : JpaRepository<Trajet, Int> {
     @Query("select t from Trajet  t where t.utilisateur.utilisateurId = :utilisateur_id and t.trajetId = :trajet_id")
     fun findTrajetByUser(
         @Param("trajet_id") idTrajet: Int,
-        @Param("utilisateur_id") idUtilisateur: Int): Trajet?
+        @Param("utilisateur_id") idUtilisateur: Int
+    ): Trajet?
 }

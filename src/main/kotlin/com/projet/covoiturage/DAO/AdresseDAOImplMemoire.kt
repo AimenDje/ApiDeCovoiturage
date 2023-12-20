@@ -1,13 +1,12 @@
 package com.projet.covoiturage.DAO
 
 import com.projet.covoiturage.Model.Adresse
-import com.projet.covoiturage.Model.Reservation
 import com.projet.covoiturage.Repository.AdresseRepo
 import org.springframework.stereotype.Repository
 
 @Repository
-class AdresseDAOImplMémoire (val repo: AdresseRepo) : AdresseDAO {
-    override fun chercherTous(): List<Adresse> = repo.findAll();
+class AdresseDAOImplMemoire(val repo: AdresseRepo) : AdresseDAO {
+    override fun chercherTous(): List<Adresse> = repo.findAll()
 
     override fun chercherParId(id: Int): Adresse? = repo.findById(id).get()
 
