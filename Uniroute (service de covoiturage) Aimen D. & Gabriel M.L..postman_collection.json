@@ -1111,27 +1111,27 @@
 	"variable": [
 		{
 			"key": "audience",
-			"value": "",
+			"value": "http://localhost:8080/",
 			"type": "string"
 		},
 		{
 			"key": "access token url",
-			"value": "",
+			"value": "https://dev-xzg1a2ojxvjzst85.us.auth0.com/oauth/token",
 			"type": "string"
 		},
 		{
 			"key": "client id",
-			"value": "",
+			"value": "4WwBw1V3QJVk3V2pmWjQjdr0PpyUHzCT",
 			"type": "string"
 		},
 		{
 			"key": "client secret",
-			"value": "",
+			"value": "M30seXZuM7TyVgjQBxha0ir0e1s7HA4BE7QbETcOsw6k-vbW2BTypv-udGm60t6z",
 			"type": "string"
 		},
 		{
 			"key": "domaine",
-			"value": "",
+			"value": "localhost:8080",
 			"type": "string"
 		}
 	]
