@@ -5,11 +5,13 @@ import com.projet.covoiturage.Model.Trajet
 import com.projet.covoiturage.Service.TrajetService
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.responses.ApiResponse
+import org.springframework.http.HttpStatus
+import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import java.security.Principal
 
 @RestController
-class TrajetController( val service: TrajetService) {
+class TrajetController(val service: TrajetService) {
 
     @Operation(
         summary = "Obtient tous les trajets d'un passager",
@@ -44,34 +46,18 @@ class TrajetController( val service: TrajetService) {
         ]
     )
     @GetMapping("/utilisateur/{idUtilisateur}/trajet/{idTrajet}")
-    fun getTrajetParUtilisateur(@PathVariable idTrajet: Int, @PathVariable idUtilisateur: Int, principal: Principal) : Trajet?{
+    fun getTrajetParUtilisateur(
+        @PathVariable idTrajet: Int,
+        @PathVariable idUtilisateur: Int,
+        principal: Principal
+    ): Trajet? {
         if (service.chercherUtilisateur(idUtilisateur) == null)
             throw UtilisateurIntrouvableExc("L'utilisateur avec l'id $idUtilisateur est introuvable.")
-        else if  (service.chercherTrajetParUtilisateur(idTrajet, idUtilisateur, principal.name) == null)
+        else if (service.chercherTrajetParUtilisateur(idTrajet, idUtilisateur, principal.name) == null)
             throw TrajetIntrouvableExc("Le trajet avec l'id $idTrajet est introuvable pour l'utilisateur $idUtilisateur")
 
-        return service.chercherTrajetParUtilisateur(idTrajet,idUtilisateur, principal.name)
+        return service.chercherTrajetParUtilisateur(idTrajet, idUtilisateur, principal.name)
     }
-
-
-
-    @Operation(
-        summary = "Obtient un trajet avec son id",
-        description = "Retourne les informations d'un trajet en le cherchant par son code.",
-        operationId = "getTrajetParId",
-        responses = [
-            ApiResponse(responseCode = "200", description = "Le trajet a été trouvé."),
-            ApiResponse(responseCode = "404", description = "Le trajet n'existe pas dans le service."),
-            ApiResponse(responseCode = "403", description = "Réservé aux Passagers.")
-        ]
-    )
-    @GetMapping("/trajet/{id}")
-    fun getTrajetParId(@PathVariable id: Int): Trajet? {
-        if (service.chercherParId(id) == null)
-            throw TrajetIntrouvableExc("Le trajet avec l'id $id est introuvable.")
-        return service.chercherParId(id)
-    }
-
 
 
     @Operation(
@@ -85,14 +71,13 @@ class TrajetController( val service: TrajetService) {
         ]
     )
     @PostMapping("/trajet")
-    fun addTrajet(@RequestBody trajet: Trajet, principal:Principal) : Trajet?{
+    fun addTrajet(@RequestBody trajet: Trajet, principal: Principal): ResponseEntity<Trajet> {
         val resultat = service.ajouter(trajet, principal.name)
         if (resultat == null)
             throw MauvaiseFormulationObjetExc("La trajet que vous essayez d'ajouter est incorrectement formulé ou est manquant")
         else
-            return resultat
+            return ResponseEntity.status(HttpStatus.CREATED).body(resultat)
     }
-
 
 
     @Operation(
@@ -106,13 +91,14 @@ class TrajetController( val service: TrajetService) {
         ]
     )
     @PutMapping("/trajet/{id}")
-    fun modifyTrajet(@PathVariable id: Int, @RequestBody trajet: Trajet, principal:Principal): Trajet? {
+    fun modifyTrajet(@PathVariable id: Int, @RequestBody trajet: Trajet, principal: Principal): Trajet? {
         if (service.chercherParId(id) == null)
-            throw MauvaiseRequeteExc("Le trajet avec l'id " + trajet.trajetId +
-                    " n'existe pas. Utilisez une requête POST pour en ajouter un nouveau.")
+            throw MauvaiseRequeteExc(
+                "Le trajet avec l'id " + trajet.trajetId +
+                        " n'existe pas. Utilisez une requête POST pour en ajouter un nouveau."
+            )
         return service.ajouter(trajet, principal.name)
     }
-
 
 
     @Operation(
@@ -126,9 +112,9 @@ class TrajetController( val service: TrajetService) {
         ]
     )
     @DeleteMapping("/trajet/{id}")
-    fun deleteTrajet(@PathVariable id: Int, principal: Principal): String{
+    fun deleteTrajet(@PathVariable id: Int, principal: Principal): ResponseEntity<String> {
         if (!service.supprimer(id, principal.name))
             throw TrajetIntrouvableExc("Le trajet avec l'id $id n'a pas pu être supprimé parce qu'il n'existe pas.")
-        return "Le trajet avec l'id $id a bien été supprimé."
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build()
     }
 }

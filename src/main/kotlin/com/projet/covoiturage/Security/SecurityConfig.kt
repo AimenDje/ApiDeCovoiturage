@@ -9,10 +9,8 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.invoke
 import org.springframework.security.oauth2.core.DelegatingOAuth2TokenValidator
 import org.springframework.security.oauth2.core.OAuth2TokenValidator
-import org.springframework.security.oauth2.jwt.JwtValidators
-import org.springframework.security.oauth2.jwt.JwtDecoder
-import org.springframework.security.web.SecurityFilterChain
 import org.springframework.security.oauth2.jwt.*
+import org.springframework.security.web.SecurityFilterChain
 
 @Configuration
 @EnableWebSecurity

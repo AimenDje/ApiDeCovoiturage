@@ -1,6 +1,7 @@
 package com.projet.covoiturage.Service
 
 import com.projet.covoiturage.DAO.ReservationDAO
+import com.projet.covoiturage.Exception.DejaAccepteeExc
 import com.projet.covoiturage.Exception.DroitInsuffisantExc
 import com.projet.covoiturage.Exception.NonAuthoriseExc
 import com.projet.covoiturage.Model.Reservation
@@ -25,6 +26,14 @@ class ReservationService(val dao: ReservationDAO) {
     fun chercherTous(userId: String): List<Reservation> {
         if (dao.validerChauffeur(userId)) {
             return dao.chercherTous()
+        } else {
+            throw DroitInsuffisantExc("Seuls les chauffeurs peuvent accéder aux réservations.")
+        }
+    }
+
+    fun chercherParIdChauffeur(idReservation: Int, userId: String): Reservation? {
+        if (dao.validerChauffeur(userId)) {
+            return dao.chercherParId(idReservation)
         } else {
             throw DroitInsuffisantExc("Seuls les chauffeurs peuvent accéder aux réservations.")
         }
@@ -58,7 +67,9 @@ class ReservationService(val dao: ReservationDAO) {
 
     fun accepterReservation(idReservation: Int, idChauffeur: Int, userId: String): Reservation? {
         if (dao.validerChauffeurEtId(idChauffeur, userId)) {
-            return dao.accepterReservation(idReservation, idChauffeur)
+            val retour = dao.accepterReservation(idReservation, idChauffeur)
+                ?: throw DejaAccepteeExc("La réservation a déjà été acceptée.")
+            return retour
         } else {
             throw DroitInsuffisantExc("Seuls les chauffeurs peuvent accéder aux réservations.")
         }
