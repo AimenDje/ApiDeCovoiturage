@@ -1131,7 +1131,7 @@
 		},
 		{
 			"key": "domaine",
-			"value": "localhost:9038",
+			"value": "ordralphabetix.dti.crosemont.quebec:9038",
 			"type": "string"
 		}
 	]
