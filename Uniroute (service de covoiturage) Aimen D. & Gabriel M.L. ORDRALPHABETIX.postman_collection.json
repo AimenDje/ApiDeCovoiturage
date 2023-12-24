@@ -1,0 +1,1138 @@
+{
+	"info": {
+		"_postman_id": "58e60d3a-ce94-4f9e-97b1-6f806dc739ec",
+		"name": "Uniroute (service de covoiturage) Aimen D. & Gabriel M.L. ORDRALPHABETIX",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "31461039",
+		"_collection_link": "https://covoiturage-team.postman.co/workspace/covoiturage-team-Workspace~fba4f0ac-60b6-4423-9d4a-6321dca49a49/collection/31461039-58e60d3a-ce94-4f9e-97b1-6f806dc739ec?action=share&source=collection_link&creator=31461039"
+	},
+	"item": [
+		{
+			"name": "Chauffeur (Joe)",
+			"item": [
+				{
+					"name": "Accueil",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{domaine}}/",
+							"protocol": "http",
+							"host": [
+								"{{domaine}}"
+							],
+							"path": [
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Obtenir les réservations disponibles",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{domaine}}/reservations",
+							"protocol": "http",
+							"host": [
+								"{{domaine}}"
+							],
+							"path": [
+								"reservations"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Obtient une réservation",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{domaine}}/reservation/1",
+							"protocol": "http",
+							"host": [
+								"{{domaine}}"
+							],
+							"path": [
+								"reservation",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Accepter une réservation",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://{{domaine}}/chauffeur/1/reservation/1",
+							"protocol": "http",
+							"host": [
+								"{{domaine}}"
+							],
+							"path": [
+								"chauffeur",
+								"1",
+								"reservation",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Obtient la réservation acceptée par le chauffeur",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{domaine}}/chauffeur/1/reservation",
+							"protocol": "http",
+							"host": [
+								"{{domaine}}"
+							],
+							"path": [
+								"chauffeur",
+								"1",
+								"reservation"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"auth": {
+				"type": "oauth2",
+				"oauth2": [
+					{
+						"key": "client_authentication",
+						"value": "header",
+						"type": "string"
+					},
+					{
+						"key": "tokenRequestParams",
+						"value": [
+							{
+								"key": "audience",
+								"value": "{{audience}}",
+								"enabled": true,
+								"send_as": "request_body"
+							}
+						],
+						"type": "any"
+					},
+					{
+						"key": "password",
+						"value": "knN3Q5788a",
+						"type": "string"
+					},
+					{
+						"key": "username",
+						"value": "biden@biden.com",
+						"type": "string"
+					},
+					{
+						"key": "clientSecret",
+						"value": "{{client secret}}",
+						"type": "string"
+					},
+					{
+						"key": "clientId",
+						"value": "{{client id}}",
+						"type": "string"
+					},
+					{
+						"key": "accessTokenUrl",
+						"value": "{{access token url}}",
+						"type": "string"
+					},
+					{
+						"key": "grant_type",
+						"value": "password_credentials",
+						"type": "string"
+					},
+					{
+						"key": "tokenName",
+						"value": "Joe",
+						"type": "string"
+					},
+					{
+						"key": "addTokenTo",
+						"value": "header",
+						"type": "string"
+					}
+				]
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "Chauffeur non auth",
+			"item": [
+				{
+					"name": "Accueil",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{domaine}}/",
+							"protocol": "http",
+							"host": [
+								"{{domaine}}"
+							],
+							"path": [
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Obtenir les réservations disponibles",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{domaine}}/reservations",
+							"protocol": "http",
+							"host": [
+								"{{domaine}}"
+							],
+							"path": [
+								"reservations"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Obtient une réservation",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{domaine}}/reservation/1",
+							"protocol": "http",
+							"host": [
+								"{{domaine}}"
+							],
+							"path": [
+								"reservation",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Accepter une réservation",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://{{domaine}}/chauffeur/1/reservation/1",
+							"protocol": "http",
+							"host": [
+								"{{domaine}}"
+							],
+							"path": [
+								"chauffeur",
+								"1",
+								"reservation",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Obtient la réservation acceptée par le chauffeur",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{domaine}}/chauffeur/1/reservation",
+							"protocol": "http",
+							"host": [
+								"{{domaine}}"
+							],
+							"path": [
+								"chauffeur",
+								"1",
+								"reservation"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"auth": {
+				"type": "oauth2",
+				"oauth2": [
+					{
+						"key": "tokenRequestParams",
+						"value": [
+							{
+								"key": "audience",
+								"value": "{{audience}}",
+								"enabled": true,
+								"send_as": "request_body"
+							}
+						],
+						"type": "any"
+					},
+					{
+						"key": "client_authentication",
+						"value": "body",
+						"type": "string"
+					},
+					{
+						"key": "password",
+						"value": "knN3Q5788a",
+						"type": "string"
+					},
+					{
+						"key": "username",
+						"value": "biden@biden.com",
+						"type": "string"
+					},
+					{
+						"key": "clientSecret",
+						"value": "{{client secret}}",
+						"type": "string"
+					},
+					{
+						"key": "clientId",
+						"value": "{{client id}}",
+						"type": "string"
+					},
+					{
+						"key": "accessTokenUrl",
+						"value": "{{access token url}}",
+						"type": "string"
+					},
+					{
+						"key": "grant_type",
+						"value": "password_credentials",
+						"type": "string"
+					},
+					{
+						"key": "tokenName",
+						"value": "Joe",
+						"type": "string"
+					},
+					{
+						"key": "addTokenTo",
+						"value": "header",
+						"type": "string"
+					}
+				]
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "Passager (Justin)",
+			"item": [
+				{
+					"name": "Accueil",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{domaine}}/",
+							"protocol": "http",
+							"host": [
+								"{{domaine}}"
+							],
+							"path": [
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Obtient les réservations d'un utilisateur",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{domaine}}/utilisateur/2/reservations",
+							"protocol": "http",
+							"host": [
+								"{{domaine}}"
+							],
+							"path": [
+								"utilisateur",
+								"2",
+								"reservations"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Obtient une réservation d'un utilisateur",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{domaine}}/utilisateur/2/reservation/1",
+							"protocol": "http",
+							"host": [
+								"{{domaine}}"
+							],
+							"path": [
+								"utilisateur",
+								"2",
+								"reservation",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Ajouter une réservation",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"trajet\": {\r\n        \"trajetId\": 3\r\n    },\r\n    \"nombrePassager\": 15,\r\n    \"heureDepart\": \"2023-11-08T18:00:00.000+00:00\",\r\n    \"chauffeur\": null,\r\n    \"acceptee\": false\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{domaine}}/reservation",
+							"protocol": "http",
+							"host": [
+								"{{domaine}}"
+							],
+							"path": [
+								"reservation"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Modifier une réservation avec son id",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n        \"reservationId\": 2,\r\n        \"trajet\": {\r\n            \"trajetId\": 3,\r\n            \"nom\": \"Travail\",\r\n            \"adresseDepart\": {\r\n                \"adresseId\": 2,\r\n                \"numeroCivil\": \"6666\",\r\n                \"appartement\": \"\",\r\n                \"rue\": \"Beaubien\",\r\n                \"ville\": \"Montréal\",\r\n                \"province\": \"Québec\",\r\n                \"codePostal\": \"J1W4X5\"\r\n            },\r\n            \"adresseArrivee\": {\r\n                \"adresseId\": 1,\r\n                \"numeroCivil\": \"2000\",\r\n                \"appartement\": \"\",\r\n                \"rue\": \"Vaillancour\",\r\n                \"ville\": \"Montréal\",\r\n                \"province\": \"Québec\",\r\n                \"codePostal\": \"J6A9Q1\"\r\n            },\r\n            \"utilisateur\": {\r\n                \"utilisateurId\": 2,\r\n                \"tokenId\": \"auth0|656a127ca19599c92097aaeb\",\r\n                \"nom\": \"Trudeau\",\r\n                \"prenom\": \"Justin\",\r\n                \"courriel\": \"trudeau@trudeau.com\",\r\n                \"telephone\": \"4380000000\",\r\n                \"adresse\": {\r\n                    \"adresseId\": 2,\r\n                    \"numeroCivil\": \"6666\",\r\n                    \"appartement\": \"\",\r\n                    \"rue\": \"Beaubien\",\r\n                    \"ville\": \"Montréal\",\r\n                    \"province\": \"Québec\",\r\n                    \"codePostal\": \"J1W4X5\"\r\n                },\r\n                \"estPassager\": true\r\n            }\r\n        },\r\n        \"nombrePassager\": 99,\r\n        \"heureDepart\": \"2023-11-08T18:00:00.000+00:00\",\r\n        \"chauffeur\": null,\r\n        \"acceptee\": false\r\n    }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{domaine}}/reservation/1",
+							"protocol": "http",
+							"host": [
+								"{{domaine}}"
+							],
+							"path": [
+								"reservation",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Supprimer une réservation",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://{{domaine}}/reservation/2",
+							"protocol": "http",
+							"host": [
+								"{{domaine}}"
+							],
+							"path": [
+								"reservation",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Obtenir tous les trajets d'un utilisateur",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{domaine}}/utilisateur/2/trajets",
+							"protocol": "http",
+							"host": [
+								"{{domaine}}"
+							],
+							"path": [
+								"utilisateur",
+								"2",
+								"trajets"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Obtient un trajet d'un utilisateur",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{domaine}}/utilisateur/2/trajet/3",
+							"protocol": "http",
+							"host": [
+								"{{domaine}}"
+							],
+							"path": [
+								"utilisateur",
+								"2",
+								"trajet",
+								"3"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Ajouter  un trajet",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"trajetId\": 4,\r\n    \"nom\": \"Divertissement\",\r\n    \"adresseDepart\": {\r\n        \"adresseId\": 2,\r\n        \"numeroCivil\": \"6666\",\r\n        \"appartement\": \"\",\r\n        \"rue\": \"Beaubien\",\r\n        \"ville\": \"Montréal\",\r\n        \"province\": \"Québec\",\r\n        \"codePostal\": \"J1W4X5\"\r\n    },\r\n    \"adresseArrivee\": {\r\n        \"adresseId\": 1,\r\n        \"numeroCivil\": \"2000\",\r\n        \"appartement\": \"\",\r\n        \"rue\": \"Vaillancour\",\r\n        \"ville\": \"Montréal\",\r\n        \"province\": \"Québec\",\r\n        \"codePostal\": \"J6A9Q1\"\r\n    },\r\n    \"utilisateur\": {\r\n        \"utilisateurId\": 2,\r\n        \"tokenId\": \"auth0|656a127ca19599c92097aaeb\",\r\n        \"nom\": \"Trudeau\",\r\n        \"prenom\": \"Justin\",\r\n        \"courriel\": \"trudeau@trudeau.com\",\r\n        \"telephone\": \"4380000000\",\r\n        \"adresse\": {\r\n            \"adresseId\": 2,\r\n            \"numeroCivil\": \"6666\",\r\n            \"appartement\": \"\",\r\n            \"rue\": \"Beaubien\",\r\n            \"ville\": \"Montréal\",\r\n            \"province\": \"Québec\",\r\n            \"codePostal\": \"J1W4X5\"\r\n        },\r\n        \"estPassager\": true\r\n    }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{domaine}}/trajet",
+							"protocol": "http",
+							"host": [
+								"{{domaine}}"
+							],
+							"path": [
+								"trajet"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Modifier un trajet avec son id",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"trajetId\": 4,\r\n    \"nom\": \"Cinéma\",\r\n    \"adresseDepart\": {\r\n        \"adresseId\": 2,\r\n        \"numeroCivil\": \"6666\",\r\n        \"appartement\": \"\",\r\n        \"rue\": \"Beaubien\",\r\n        \"ville\": \"Montréal\",\r\n        \"province\": \"Québec\",\r\n        \"codePostal\": \"J1W4X5\"\r\n    },\r\n    \"adresseArrivee\": {\r\n        \"adresseId\": 1,\r\n        \"numeroCivil\": \"2000\",\r\n        \"appartement\": \"\",\r\n        \"rue\": \"Vaillancour\",\r\n        \"ville\": \"Montréal\",\r\n        \"province\": \"Québec\",\r\n        \"codePostal\": \"J6A9Q1\"\r\n    },\r\n    \"utilisateur\": {\r\n        \"utilisateurId\": 2,\r\n        \"tokenId\": \"auth0|656a127ca19599c92097aaeb\",\r\n        \"nom\": \"Trudeau\",\r\n        \"prenom\": \"Justin\",\r\n        \"courriel\": \"trudeau@trudeau.com\",\r\n        \"telephone\": \"4380000000\",\r\n        \"adresse\": {\r\n            \"adresseId\": 2,\r\n            \"numeroCivil\": \"6666\",\r\n            \"appartement\": \"\",\r\n            \"rue\": \"Beaubien\",\r\n            \"ville\": \"Montréal\",\r\n            \"province\": \"Québec\",\r\n            \"codePostal\": \"J1W4X5\"\r\n        },\r\n        \"estPassager\": true\r\n    }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{domaine}}/trajet/1",
+							"protocol": "http",
+							"host": [
+								"{{domaine}}"
+							],
+							"path": [
+								"trajet",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Supprimer un trajet son id",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://{{domaine}}/trajet/4",
+							"protocol": "http",
+							"host": [
+								"{{domaine}}"
+							],
+							"path": [
+								"trajet",
+								"4"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"auth": {
+				"type": "oauth2",
+				"oauth2": [
+					{
+						"key": "tokenRequestParams",
+						"value": [
+							{
+								"key": "audience",
+								"value": "{{audience}}",
+								"enabled": true,
+								"send_as": "request_body"
+							}
+						],
+						"type": "any"
+					},
+					{
+						"key": "password",
+						"value": "9LruL7fZw2",
+						"type": "string"
+					},
+					{
+						"key": "username",
+						"value": "trudeau@trudeau.com",
+						"type": "string"
+					},
+					{
+						"key": "clientSecret",
+						"value": "{{client secret}}",
+						"type": "string"
+					},
+					{
+						"key": "clientId",
+						"value": "{{client id}}",
+						"type": "string"
+					},
+					{
+						"key": "accessTokenUrl",
+						"value": "{{access token url}}",
+						"type": "string"
+					},
+					{
+						"key": "grant_type",
+						"value": "password_credentials",
+						"type": "string"
+					},
+					{
+						"key": "tokenName",
+						"value": "Justin",
+						"type": "string"
+					},
+					{
+						"key": "addTokenTo",
+						"value": "header",
+						"type": "string"
+					}
+				]
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "Passager non auth",
+			"item": [
+				{
+					"name": "Accueil",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{domaine}}/",
+							"protocol": "http",
+							"host": [
+								"{{domaine}}"
+							],
+							"path": [
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Obtient les réservations d'un utilisateur",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{domaine}}/utilisateur/2/reservations",
+							"protocol": "http",
+							"host": [
+								"{{domaine}}"
+							],
+							"path": [
+								"utilisateur",
+								"2",
+								"reservations"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Obtient une réservation d'un utilisateur",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{domaine}}/utilisateur/2/reservation/1",
+							"protocol": "http",
+							"host": [
+								"{{domaine}}"
+							],
+							"path": [
+								"utilisateur",
+								"2",
+								"reservation",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Ajouter une réservation",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"trajet\": {\r\n        \"trajetId\": 3\r\n    },\r\n    \"nombrePassager\": 15,\r\n    \"heureDepart\": \"2023-11-08T18:00:00.000+00:00\",\r\n    \"chauffeur\": null,\r\n    \"acceptee\": false\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{domaine}}/reservation",
+							"protocol": "http",
+							"host": [
+								"{{domaine}}"
+							],
+							"path": [
+								"reservation"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Modifier une réservation avec son id",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n        \"reservationId\": 2,\r\n        \"trajet\": {\r\n            \"trajetId\": 3,\r\n            \"nom\": \"Travail\",\r\n            \"adresseDepart\": {\r\n                \"adresseId\": 2,\r\n                \"numeroCivil\": \"6666\",\r\n                \"appartement\": \"\",\r\n                \"rue\": \"Beaubien\",\r\n                \"ville\": \"Montréal\",\r\n                \"province\": \"Québec\",\r\n                \"codePostal\": \"J1W4X5\"\r\n            },\r\n            \"adresseArrivee\": {\r\n                \"adresseId\": 1,\r\n                \"numeroCivil\": \"2000\",\r\n                \"appartement\": \"\",\r\n                \"rue\": \"Vaillancour\",\r\n                \"ville\": \"Montréal\",\r\n                \"province\": \"Québec\",\r\n                \"codePostal\": \"J6A9Q1\"\r\n            },\r\n            \"utilisateur\": {\r\n                \"utilisateurId\": 2,\r\n                \"tokenId\": \"auth0|656a127ca19599c92097aaeb\",\r\n                \"nom\": \"Trudeau\",\r\n                \"prenom\": \"Justin\",\r\n                \"courriel\": \"trudeau@trudeau.com\",\r\n                \"telephone\": \"4380000000\",\r\n                \"adresse\": {\r\n                    \"adresseId\": 2,\r\n                    \"numeroCivil\": \"6666\",\r\n                    \"appartement\": \"\",\r\n                    \"rue\": \"Beaubien\",\r\n                    \"ville\": \"Montréal\",\r\n                    \"province\": \"Québec\",\r\n                    \"codePostal\": \"J1W4X5\"\r\n                },\r\n                \"estPassager\": true\r\n            }\r\n        },\r\n        \"nombrePassager\": 99,\r\n        \"heureDepart\": \"2023-11-08T18:00:00.000+00:00\",\r\n        \"chauffeur\": null,\r\n        \"acceptee\": false\r\n    }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{domaine}}/reservation/1",
+							"protocol": "http",
+							"host": [
+								"{{domaine}}"
+							],
+							"path": [
+								"reservation",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Supprimer une réservation",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://{{domaine}}/reservation/2",
+							"protocol": "http",
+							"host": [
+								"{{domaine}}"
+							],
+							"path": [
+								"reservation",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Obtenir tous les trajets d'un utilisateur",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{domaine}}/utilisateur/2/trajets",
+							"protocol": "http",
+							"host": [
+								"{{domaine}}"
+							],
+							"path": [
+								"utilisateur",
+								"2",
+								"trajets"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Obtient un trajet d'un utilisateur",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{domaine}}/utilisateur/2/trajet/3",
+							"protocol": "http",
+							"host": [
+								"{{domaine}}"
+							],
+							"path": [
+								"utilisateur",
+								"2",
+								"trajet",
+								"3"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Ajouter  un trajet",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"trajetId\": 4,\r\n    \"nom\": \"Divertissement\",\r\n    \"adresseDepart\": {\r\n        \"adresseId\": 2,\r\n        \"numeroCivil\": \"6666\",\r\n        \"appartement\": \"\",\r\n        \"rue\": \"Beaubien\",\r\n        \"ville\": \"Montréal\",\r\n        \"province\": \"Québec\",\r\n        \"codePostal\": \"J1W4X5\"\r\n    },\r\n    \"adresseArrivee\": {\r\n        \"adresseId\": 1,\r\n        \"numeroCivil\": \"2000\",\r\n        \"appartement\": \"\",\r\n        \"rue\": \"Vaillancour\",\r\n        \"ville\": \"Montréal\",\r\n        \"province\": \"Québec\",\r\n        \"codePostal\": \"J6A9Q1\"\r\n    },\r\n    \"utilisateur\": {\r\n        \"utilisateurId\": 2,\r\n        \"tokenId\": \"auth0|656a127ca19599c92097aaeb\",\r\n        \"nom\": \"Trudeau\",\r\n        \"prenom\": \"Justin\",\r\n        \"courriel\": \"trudeau@trudeau.com\",\r\n        \"telephone\": \"4380000000\",\r\n        \"adresse\": {\r\n            \"adresseId\": 2,\r\n            \"numeroCivil\": \"6666\",\r\n            \"appartement\": \"\",\r\n            \"rue\": \"Beaubien\",\r\n            \"ville\": \"Montréal\",\r\n            \"province\": \"Québec\",\r\n            \"codePostal\": \"J1W4X5\"\r\n        },\r\n        \"estPassager\": true\r\n    }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{domaine}}/trajet",
+							"protocol": "http",
+							"host": [
+								"{{domaine}}"
+							],
+							"path": [
+								"trajet"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Modifier un trajet avec son id",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"trajetId\": 4,\r\n    \"nom\": \"Cinéma\",\r\n    \"adresseDepart\": {\r\n        \"adresseId\": 2,\r\n        \"numeroCivil\": \"6666\",\r\n        \"appartement\": \"\",\r\n        \"rue\": \"Beaubien\",\r\n        \"ville\": \"Montréal\",\r\n        \"province\": \"Québec\",\r\n        \"codePostal\": \"J1W4X5\"\r\n    },\r\n    \"adresseArrivee\": {\r\n        \"adresseId\": 1,\r\n        \"numeroCivil\": \"2000\",\r\n        \"appartement\": \"\",\r\n        \"rue\": \"Vaillancour\",\r\n        \"ville\": \"Montréal\",\r\n        \"province\": \"Québec\",\r\n        \"codePostal\": \"J6A9Q1\"\r\n    },\r\n    \"utilisateur\": {\r\n        \"utilisateurId\": 2,\r\n        \"tokenId\": \"auth0|656a127ca19599c92097aaeb\",\r\n        \"nom\": \"Trudeau\",\r\n        \"prenom\": \"Justin\",\r\n        \"courriel\": \"trudeau@trudeau.com\",\r\n        \"telephone\": \"4380000000\",\r\n        \"adresse\": {\r\n            \"adresseId\": 2,\r\n            \"numeroCivil\": \"6666\",\r\n            \"appartement\": \"\",\r\n            \"rue\": \"Beaubien\",\r\n            \"ville\": \"Montréal\",\r\n            \"province\": \"Québec\",\r\n            \"codePostal\": \"J1W4X5\"\r\n        },\r\n        \"estPassager\": true\r\n    }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{domaine}}/trajet/1",
+							"protocol": "http",
+							"host": [
+								"{{domaine}}"
+							],
+							"path": [
+								"trajet",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Supprimer un trajet son id",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://{{domaine}}/trajet/4",
+							"protocol": "http",
+							"host": [
+								"{{domaine}}"
+							],
+							"path": [
+								"trajet",
+								"4"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"auth": {
+				"type": "oauth2",
+				"oauth2": [
+					{
+						"key": "tokenRequestParams",
+						"value": [
+							{
+								"key": "audience",
+								"value": "{{audience}}",
+								"enabled": true,
+								"send_as": "request_body"
+							}
+						],
+						"type": "any"
+					},
+					{
+						"key": "password",
+						"value": "9LruL7fZw2",
+						"type": "string"
+					},
+					{
+						"key": "username",
+						"value": "trudeau@trudeau.com",
+						"type": "string"
+					},
+					{
+						"key": "clientSecret",
+						"value": "{{client secret}}",
+						"type": "string"
+					},
+					{
+						"key": "clientId",
+						"value": "{{client id}}",
+						"type": "string"
+					},
+					{
+						"key": "accessTokenUrl",
+						"value": "{{access token url}}",
+						"type": "string"
+					},
+					{
+						"key": "grant_type",
+						"value": "password_credentials",
+						"type": "string"
+					},
+					{
+						"key": "tokenName",
+						"value": "Justin",
+						"type": "string"
+					},
+					{
+						"key": "addTokenTo",
+						"value": "header",
+						"type": "string"
+					}
+				]
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "audience",
+			"value": "http://ordralphabetix.dti.crosemont.quebec:9038",
+			"type": "string"
+		},
+		{
+			"key": "access token url",
+			"value": "https://dev-xzg1a2ojxvjzst85.us.auth0.com/oauth/token",
+			"type": "string"
+		},
+		{
+			"key": "client id",
+			"value": "4WwBw1V3QJVk3V2pmWjQjdr0PpyUHzCT",
+			"type": "string"
+		},
+		{
+			"key": "client secret",
+			"value": "M30seXZuM7TyVgjQBxha0ir0e1s7HA4BE7QbETcOsw6k-vbW2BTypv-udGm60t6z",
+			"type": "string"
+		},
+		{
+			"key": "domaine",
+			"value": "localhost:9038",
+			"type": "string"
+		}
+	]
+}

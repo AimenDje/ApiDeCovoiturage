@@ -1,5 +1,5 @@
 auth0:
-  audience: http://localhost:8080/
+  audience: http://ordralphabetix.dti.crosemont.quebec:9038
 spring:
   security:
     oauth2:

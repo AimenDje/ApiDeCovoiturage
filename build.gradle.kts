@@ -34,7 +34,7 @@ dependencies {
 	implementation("org.springframework.security:spring-security-oauth2-jose")
 	implementation("org.springframework.security:spring-security-config")
 	implementation("org.springframework.security:spring-security-test")
-
+	implementation("com.h2database:h2:2.2.224")
 }
 
 tasks.withType<KotlinCompile> {
